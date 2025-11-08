@@ -114,13 +114,9 @@ void VideoEncoderSW::Initialize() {
     m_codecContext->rc_max_rate = m_codecContext->bit_rate;
     m_codecContext->thread_count = settings.m_swThreadCount;
 
-    if ((err = avcodec_open2(m_codecContext, codec, &opt)))// 获取 FFmpeg 错误描述字符串
-        char err_str[AV_ERROR_MAX_STRING_SIZE] = {0};
-        av_strerror(err, err_str, AV_ERROR_MAX_STRING_SIZE);
-
-        // 将所有调试信息打包到 MakeException 中一次性抛出
+    if ((err = avcodec_open2(m_codecContext, codec, &opt)))
         throw MakeException(
-            "Cannot open video encoder codec. FFmpeg error: %d (%s)\n"
+            "Cannot open video encoder codec: %d\n"
             "--- Failing Parameters ---\n"
             "  width/height: %d x %d\n"
             "  pix_fmt (enum): %d\n"
@@ -134,7 +130,7 @@ void VideoEncoderSW::Initialize() {
             "  max_b_frames: %d\n"
             "  thread_count: %d\n"
             "--------------------------",
-            err, err_str,
+            err_str,
             m_codecContext->width, m_codecContext->height,
             m_codecContext->pix_fmt,
             m_codecContext->profile,
