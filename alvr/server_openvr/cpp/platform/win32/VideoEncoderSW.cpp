@@ -98,7 +98,7 @@ void VideoEncoderSW::Initialize() {
         m_codecContext->colorspace = AVCOL_SPC_BT709;
     }
     m_codecContext->max_b_frames = 0;
-    m_codecContext->gop_size = 0;
+    //m_codecContext->gop_size = 0;
     m_codecContext->bit_rate = m_bitrateInMBits * 1'000'000L;
     m_codecContext->rc_buffer_size = m_codecContext->bit_rate / settings.m_refreshRate * 1.1;
     switch (settings.m_rateControlMode) {
@@ -114,8 +114,39 @@ void VideoEncoderSW::Initialize() {
     m_codecContext->rc_max_rate = m_codecContext->bit_rate;
     m_codecContext->thread_count = settings.m_swThreadCount;
 
-    if ((err = avcodec_open2(m_codecContext, codec, &opt)))
-        throw MakeException("Cannot open video encoder codec: %d", err);
+    if ((err = avcodec_open2(m_codecContext, codec, &opt)))// 获取 FFmpeg 错误描述字符串
+        char err_str[AV_ERROR_MAX_STRING_SIZE] = {0};
+        av_strerror(err, err_str, AV_ERROR_MAX_STRING_SIZE);
+
+        // 将所有调试信息打包到 MakeException 中一次性抛出
+        throw MakeException(
+            "Cannot open video encoder codec. FFmpeg error: %d (%s)\n"
+            "--- Failing Parameters ---\n"
+            "  width/height: %d x %d\n"
+            "  pix_fmt (enum): %d\n"
+            "  profile (enum): %d\n"
+            "  time_base: %d/%d\n"
+            "  framerate: %d/%d\n"
+            "  bit_rate: %lld\n"
+            "  rc_max_rate: %lld\n"
+            "  rc_buffer_size: %d\n"
+            "  gop_size: %d\n"
+            "  max_b_frames: %d\n"
+            "  thread_count: %d\n"
+            "--------------------------",
+            err, err_str,
+            m_codecContext->width, m_codecContext->height,
+            m_codecContext->pix_fmt,
+            m_codecContext->profile,
+            m_codecContext->time_base.num, m_codecContext->time_base.den,
+            m_codecContext->framerate.num, m_codecContext->framerate.den,
+            m_codecContext->bit_rate,
+            m_codecContext->rc_max_rate,
+            m_codecContext->rc_buffer_size,
+            m_codecContext->gop_size,
+            m_codecContext->max_b_frames,
+            m_codecContext->thread_count
+        );
 
     // Config transfer/encode frames
     m_transferredFrame = av_frame_alloc();
