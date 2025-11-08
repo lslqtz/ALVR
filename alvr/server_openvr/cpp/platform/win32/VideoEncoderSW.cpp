@@ -115,9 +115,9 @@ void VideoEncoderSW::Initialize() {
     m_codecContext->thread_count = settings.m_swThreadCount;
 
     if ((err = avcodec_open2(m_codecContext, codec, &opt)))
-        throw MakeException(
+        throw MakeException(
             "Cannot open video encoder codec: %d.\nwidth/height: %d x %d, \npix_fmt (enum): %d, \nprofile (enum): %d, \ntime_base: %d/%d, \nframerate: %d/%d, \nbit_rate: %lld, \nrc_max_rate: %lld, \nrc_buffer_size: %d, \ngop_size: %d, \nmax_b_frames: %d, \nthread_count: %d\n",
-            err_str,
+            err,
             m_codecContext->width, m_codecContext->height,
             m_codecContext->pix_fmt,
             m_codecContext->profile,
