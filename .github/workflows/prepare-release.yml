@@ -49,18 +49,6 @@ jobs:
         id: output_ref
         run: echo "::set-output name=release_ref::$(git rev-parse HEAD)"
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.bump_version.outputs.version_tag }}
-          release_name: ALVR ${{ steps.bump_version.outputs.version_tag }}
-          draft: true
-          prerelease: false
-          commitish: ${{ steps.output_ref.outputs.release_ref }}
-
   build_windows_streamer:
     runs-on: windows-2022
     needs: [prepare_release]
@@ -87,11 +75,7 @@ jobs:
           cargo xtask package-streamer --gpl --ci
 
       - name: Upload streamer
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/upload-artifact@v4
         with:
-          upload_url: ${{ needs.prepare_release.outputs.upload_url }}
-          asset_path: ./build/alvr_streamer_windows.zip
-          asset_name: alvr_streamer_windows.zip
-          asset_content_type: application/zip
+          path: ./build/alvr_streamer_windows.zip
+          name: alvr_streamer_windows
