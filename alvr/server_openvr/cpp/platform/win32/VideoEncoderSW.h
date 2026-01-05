@@ -5,6 +5,7 @@
 #include <wrl.h>
 
 #include "ALVR-common/packet_types.h"
+#include "Arm64EncoderIpc.h"
 #include "VideoEncoder.h"
 #include "shared/d3drender.h"
 
@@ -18,6 +19,7 @@ extern "C" {
 using Microsoft::WRL::ComPtr;
 
 // Software video encoder using FFMPEG
+// Supports both in-process encoding and out-of-process ARM64 encoding via IPC
 class VideoEncoderSW : public VideoEncoder {
 public:
     VideoEncoderSW(std::shared_ptr<CD3DRender> pD3DRender, int width, int height);
@@ -42,8 +44,9 @@ public:
 private:
     std::shared_ptr<CD3DRender> m_d3dRender;
 
-    AVCodecContext* m_codecContext;
-    AVFrame *m_transferredFrame, *m_encoderFrame;
+    // In-process FFmpeg encoding (fallback)
+    AVCodecContext* m_codecContext = nullptr;
+    AVFrame *m_transferredFrame = nullptr, *m_encoderFrame = nullptr;
     SwsContext* m_scalerContext = nullptr;
 
     ComPtr<ID3D11Texture2D> m_stagingTex;
@@ -55,6 +58,15 @@ private:
     int m_renderWidth;
     int m_renderHeight;
     int m_bitrateInMBits;
+
+    // ARM64 out-of-process encoder via IPC
+    std::unique_ptr<Arm64EncoderIpc::EncoderIpcClient> m_arm64Encoder;
+    bool m_useArm64Encoder = false;
+
+    // 尝试初始化 ARM64 编码器，失败则使用内置 FFmpeg
+    bool TryInitArm64Encoder();
+    // 通过 ARM64 编码器处理帧
+    bool TransmitViaArm64(const uint8_t* data, uint32_t size, uint64_t timestampNs, bool insertIDR);
 };
 
 #endif // ALVR_GPL

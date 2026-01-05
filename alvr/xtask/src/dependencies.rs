@@ -58,6 +58,7 @@ Cflags: -I${{includedir}}
 }
 
 pub fn prepare_ffmpeg_windows(deps_path: &Path) {
+    // 下载 x64 FFmpeg (用于主驱动)
     command::download_and_extract_zip(
         &format!(
             "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/{}",
@@ -73,6 +74,27 @@ pub fn prepare_ffmpeg_windows(deps_path: &Path) {
     )
     .unwrap();
 }
+
+/// 下载 ARM64 FFmpeg (用于 ARM64 进程外编码器)
+pub fn prepare_ffmpeg_windows_arm64(deps_path: &Path) {
+    let arm64_path = deps_path.join("ffmpeg-arm64");
+    
+    command::download_and_extract_zip(
+        &format!(
+            "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/{}",
+            "ffmpeg-n7.1-latest-winarm64-gpl-shared-7.1.zip"
+        ),
+        deps_path,
+    )
+    .unwrap();
+
+    fs::rename(
+        deps_path.join("ffmpeg-n7.1-latest-winarm64-gpl-shared-7.1"),
+        arm64_path,
+    )
+    .unwrap();
+}
+
 
 pub fn prepare_windows_deps(skip_admin_priv: bool) {
     let sh = Shell::new().unwrap();

@@ -177,10 +177,13 @@ void VideoEncoderSW::Transmit(
     }
     // Debug("Success in mapping staging texture");
 
+    // 确定输入纹理的像素格式
+    // HDR 模式使用 NV12/P010 (semi-planar)，非 HDR 使用 RGBA
     AVPixelFormat inputFormat = AV_PIX_FMT_RGBA;
     if (Settings::Instance().m_enableHdr) {
+        // NV12/P010 是 semi-planar 格式 (Y plane + interleaved UV plane)
         inputFormat
-            = Settings::Instance().m_use10bitEncoder ? AV_PIX_FMT_YUV420P10 : AV_PIX_FMT_YUV420P;
+            = Settings::Instance().m_use10bitEncoder ? AV_PIX_FMT_P010 : AV_PIX_FMT_NV12;
     }
 
     // Setup software scaler if not defined yet; we can only define it here as we now have the
@@ -209,10 +212,21 @@ void VideoEncoderSW::Transmit(
     // We got the texture, populate tansferredFrame with data
     m_transferredFrame->width = m_stagingTexDesc.Width;
     m_transferredFrame->height = m_stagingTexDesc.Height;
-    m_transferredFrame->data[0] = (uint8_t*)m_stagingTexMap.pData;
-    m_transferredFrame->linesize[0] = m_stagingTexMap.RowPitch;
     m_transferredFrame->format = inputFormat;
     m_transferredFrame->pts = targetTimestampNs;
+
+    if (Settings::Instance().m_enableHdr) {
+        // NV12/P010 有 2 个平面: Y plane 和 interleaved UV plane
+        m_transferredFrame->data[0] = (uint8_t*)m_stagingTexMap.pData;
+        m_transferredFrame->data[1] = m_transferredFrame->data[0]
+            + m_stagingTexDesc.Height * m_stagingTexMap.RowPitch;
+        m_transferredFrame->linesize[0] = m_stagingTexMap.RowPitch;
+        m_transferredFrame->linesize[1] = m_stagingTexMap.RowPitch;
+    } else {
+        // RGBA 是单平面格式
+        m_transferredFrame->data[0] = (uint8_t*)m_stagingTexMap.pData;
+        m_transferredFrame->linesize[0] = m_stagingTexMap.RowPitch;
+    }
 
     // Use SWScaler for scaling
     if (sws_scale(
