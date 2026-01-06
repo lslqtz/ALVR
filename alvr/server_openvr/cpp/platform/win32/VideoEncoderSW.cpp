@@ -38,6 +38,12 @@ void VideoEncoderSW::Initialize() {
     int err;
     Debug("Initializing VideoEncoderSW.\n");
 
+    // 尝试使用 ARM64 编码器（仅在 Windows on ARM 上）
+    if (TryInitArm64Encoder()) {
+        // ARM64 编码器初始化成功，不需要初始化内置 FFmpeg
+        return;
+    }
+
     const auto& settings = Settings::Instance();
 
     // Query codec
@@ -133,12 +139,24 @@ void VideoEncoderSW::Initialize() {
 void VideoEncoderSW::Shutdown() {
     Debug("Shutting down VideoEncoderSW.\n");
 
-    av_frame_free(&m_transferredFrame);
-    av_frame_free(&m_encoderFrame);
+    // 清理 ARM64 编码器
+    if (m_arm64Encoder) {
+        m_arm64Encoder->Shutdown();
+        m_arm64Encoder.reset();
+        m_useArm64Encoder = false;
+    }
 
-    avcodec_free_context(&m_codecContext);
-    sws_freeContext(m_scalerContext);
-    m_scalerContext = nullptr;
+    // 清理内置 FFmpeg 编码器
+    if (m_transferredFrame)
+        av_frame_free(&m_transferredFrame);
+    if (m_encoderFrame)
+        av_frame_free(&m_encoderFrame);
+    if (m_codecContext)
+        avcodec_free_context(&m_codecContext);
+    if (m_scalerContext) {
+        sws_freeContext(m_scalerContext);
+        m_scalerContext = nullptr;
+    }
 
     Debug("Successfully shutdown VideoEncoderSW.\n");
 }
@@ -146,6 +164,38 @@ void VideoEncoderSW::Shutdown() {
 void VideoEncoderSW::Transmit(
     ID3D11Texture2D* pTexture, uint64_t presentationTime, uint64_t targetTimestampNs, bool insertIDR
 ) {
+    // 如果使用 ARM64 编码器，需要先准备 staging texture 然后发送
+    if (m_useArm64Encoder) {
+        // Setup staging texture if not defined yet
+        if (!m_stagingTex) {
+            HRESULT hr = SetupStagingTexture(pTexture);
+            if (FAILED(hr)) {
+                Error("Failed to create staging texture: %p %ls", hr, GetErrorStr(hr).c_str());
+                return;
+            }
+        }
+
+        // Copy texture to CPU accessible memory
+        HRESULT hr = CopyTexture(pTexture);
+        if (FAILED(hr)) {
+            Error("Failed to copy texture: %p %ls", hr, GetErrorStr(hr).c_str());
+            return;
+        }
+
+        // 通过 ARM64 编码器处理
+        uint32_t dataSize = m_stagingTexMap.RowPitch * m_stagingTexDesc.Height;
+        if (Settings::Instance().m_enableHdr) {
+            // NV12/P010 有额外的 UV plane
+            dataSize += m_stagingTexMap.RowPitch * (m_stagingTexDesc.Height / 2);
+        }
+
+        TransmitViaArm64((uint8_t*)m_stagingTexMap.pData, dataSize, targetTimestampNs, insertIDR);
+
+        m_d3dRender->GetContext()->Unmap(m_stagingTex.Get(), 0);
+        return;
+    }
+
+    // 内置 FFmpeg 编码器路径
     // Handle bitrate changes
     auto params = GetDynamicEncoderParams();
     if (params.updated) {
@@ -182,8 +232,7 @@ void VideoEncoderSW::Transmit(
     AVPixelFormat inputFormat = AV_PIX_FMT_RGBA;
     if (Settings::Instance().m_enableHdr) {
         // NV12/P010 是 semi-planar 格式 (Y plane + interleaved UV plane)
-        inputFormat
-            = Settings::Instance().m_use10bitEncoder ? AV_PIX_FMT_P010 : AV_PIX_FMT_NV12;
+        inputFormat = Settings::Instance().m_use10bitEncoder ? AV_PIX_FMT_P010 : AV_PIX_FMT_NV12;
     }
 
     // Setup software scaler if not defined yet; we can only define it here as we now have the
@@ -218,8 +267,8 @@ void VideoEncoderSW::Transmit(
     if (Settings::Instance().m_enableHdr) {
         // NV12/P010 有 2 个平面: Y plane 和 interleaved UV plane
         m_transferredFrame->data[0] = (uint8_t*)m_stagingTexMap.pData;
-        m_transferredFrame->data[1] = m_transferredFrame->data[0]
-            + m_stagingTexDesc.Height * m_stagingTexMap.RowPitch;
+        m_transferredFrame->data[1]
+            = m_transferredFrame->data[0] + m_stagingTexDesc.Height * m_stagingTexMap.RowPitch;
         m_transferredFrame->linesize[0] = m_stagingTexMap.RowPitch;
         m_transferredFrame->linesize[1] = m_stagingTexMap.RowPitch;
     } else {
@@ -315,6 +364,78 @@ AVCodecID VideoEncoderSW::ToFFMPEGCodec(ALVR_CODEC codec) {
     default:
         return AV_CODEC_ID_NONE;
     }
+}
+
+// ARM64 编码器集成方法
+bool VideoEncoderSW::TryInitArm64Encoder() {
+#ifdef _WIN32
+    // 检查是否在 Windows on ARM 上运行
+    SYSTEM_INFO sysInfo;
+    GetNativeSystemInfo(&sysInfo);
+
+    // 只有在 ARM64 系统上才尝试使用 ARM64 编码器
+    if (sysInfo.wProcessorArchitecture != PROCESSOR_ARCHITECTURE_ARM64) {
+        Debug("Not running on ARM64, skipping ARM64 encoder\n");
+        return false;
+    }
+
+    Debug("Detected ARM64 system, trying ARM64 encoder...\n");
+
+    m_arm64Encoder = std::make_unique<Arm64EncoderIpc::EncoderIpcClient>();
+    if (m_arm64Encoder->Initialize(m_renderWidth, m_renderHeight)) {
+        m_useArm64Encoder = true;
+        Info("ARM64 encoder initialized successfully, using out-of-process encoding\n");
+        return true;
+    }
+
+    m_arm64Encoder.reset();
+    Debug("ARM64 encoder not available, falling back to in-process FFmpeg\n");
+#endif
+    return false;
+}
+
+bool VideoEncoderSW::TransmitViaArm64(
+    const uint8_t* data, uint32_t size, uint64_t timestampNs, bool insertIDR
+) {
+    if (!m_arm64Encoder || !m_arm64Encoder->IsConnected()) {
+        return false;
+    }
+
+    // 确定像素格式
+    const auto& settings = Settings::Instance();
+    Arm64EncoderIpc::PixelFormat format = Arm64EncoderIpc::PixelFormat::RGBA;
+    if (settings.m_enableHdr) {
+        format = settings.m_use10bitEncoder ? Arm64EncoderIpc::PixelFormat::P010
+                                            : Arm64EncoderIpc::PixelFormat::NV12;
+    }
+
+    // 发送帧给 ARM64 编码器
+    if (!m_arm64Encoder->SendFrame(
+            data,
+            size,
+            m_stagingTexDesc.Width,
+            m_stagingTexDesc.Height,
+            m_stagingTexMap.RowPitch,
+            timestampNs,
+            insertIDR,
+            format
+        )) {
+        Error("Failed to send frame to ARM64 encoder\n");
+        return false;
+    }
+
+    // 接收编码后的数据包
+    std::vector<uint8_t> packet;
+    uint64_t pts;
+    bool isIdr;
+
+    if (m_arm64Encoder->ReceivePacket(packet, pts, isIdr)) {
+        // 发送到客户端
+        ParseFrameNals(m_codec, packet.data(), packet.size(), pts, isIdr);
+        return true;
+    }
+
+    return false;
 }
 
 #endif // ALVR_GPL
