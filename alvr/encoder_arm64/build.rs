@@ -41,7 +41,7 @@ fn find_ffmpeg_dir() -> Option<PathBuf> {
         .parent()? // ALVR root
         .to_path_buf();
     
-    let deps_arm64 = workspace_dir.join("deps/windows/ffmpeg-arm64/ffmpeg-n7.1-latest-winarm64-gpl-shared-7.1");
+    let deps_arm64 = workspace_dir.join("deps/windows/ffmpeg-arm64");
     if deps_arm64.exists() {
         return Some(deps_arm64);
     }

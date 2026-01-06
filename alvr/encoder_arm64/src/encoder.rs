@@ -149,7 +149,10 @@ impl VideoEncoder {
             
             loop {
                 let ret = ffi::avcodec_receive_packet(self.codec_ctx, packet);
-                if ret == ffi::AVERROR(ffi::EAGAIN as i32) || ret == ffi::AVERROR_EOF {
+                // EAGAIN = 11 on Windows/POSIX, AVERROR_EOF = FFERRTAG('E','O','F',' ')
+                const EAGAIN: i32 = 11;
+                const AVERROR_EOF: i32 = -(('E' as i32) | (('O' as i32) << 8) | (('F' as i32) << 16) | ((' ' as i32) << 24));
+                if ret == averror(EAGAIN) || ret == AVERROR_EOF {
                     break;
                 }
                 if ret < 0 {
@@ -187,7 +190,7 @@ impl VideoEncoder {
             let src_format = match pixel_format {
                 PixelFormat::Rgba => ffi::AVPixelFormat_AV_PIX_FMT_RGBA,
                 PixelFormat::Nv12 => ffi::AVPixelFormat_AV_PIX_FMT_NV12,
-                PixelFormat::P010 => ffi::AVPixelFormat_AV_PIX_FMT_P010,
+                PixelFormat::P010 => ffi::AVPixelFormat_AV_PIX_FMT_P010LE,
             };
             
             self.sws_ctx = ffi::sws_getContext(
@@ -237,9 +240,7 @@ impl Drop for VideoEncoder {
 }
 
 // FFmpeg AVERROR 宏的 Rust 实现
-impl ffi {
-    #[inline]
-    pub const fn AVERROR(e: i32) -> i32 {
-        -e
-    }
+#[inline]
+const fn averror(e: i32) -> i32 {
+    -e
 }

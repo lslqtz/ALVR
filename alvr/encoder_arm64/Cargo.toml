@@ -18,7 +18,7 @@ bincode = "1"
 serde = { version = "1", features = ["derive"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
-windows = { version = "0.61", features = [
+windows = { version = "0.58", features = [
     "Win32_Foundation",
     "Win32_System_Memory",
     "Win32_System_Threading",
