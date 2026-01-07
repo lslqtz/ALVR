@@ -381,10 +381,25 @@ bool VideoEncoderSW::TryInitArm64Encoder() {
 
     Debug("Detected ARM64 system, trying ARM64 encoder...\n");
 
+    // 从 ALVR 设置获取 codec 类型
+    std::string codecStr = "h264";
+    switch (m_codec) {
+    case ALVR_CODEC_HEVC:
+        codecStr = "hevc";
+        break;
+    case ALVR_CODEC_H264:
+    default:
+        codecStr = "h264";
+        break;
+    }
+
     m_arm64Encoder = std::make_unique<Arm64EncoderIpc::EncoderIpcClient>();
-    if (m_arm64Encoder->Initialize(m_renderWidth, m_renderHeight)) {
+    if (m_arm64Encoder->Initialize(m_renderWidth, m_renderHeight, codecStr)) {
         m_useArm64Encoder = true;
-        Info("ARM64 encoder initialized successfully, using out-of-process encoding\n");
+        Info(
+            "ARM64 encoder initialized successfully, using out-of-process encoding (%s)\n",
+            codecStr.c_str()
+        );
         return true;
     }
 

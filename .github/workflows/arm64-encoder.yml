@@ -73,10 +73,11 @@ jobs:
           path: artifacts/
           retention-days: 30
 
-  # 可选：验证 x64 主驱动仍能正常构建
-  verify-x64-driver:
-    name: Verify x64 Driver Build
+  # 构建完整 x64 Streamer (含 GPL FFmpeg 和 ARM64 编码器支持)
+  build-x64-streamer:
+    name: Build x64 Streamer with ARM64 Support
     runs-on: windows-latest
+    needs: build-arm64-encoder
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -88,9 +89,33 @@ jobs:
 
       - name: Cache Cargo
         uses: Swatinem/rust-cache@v2
+        with:
+          key: x64-streamer-gpl
 
-      - name: Prepare deps
-        run: cargo xtask prepare-deps --platform windows
+      - name: Prepare deps (with GPL FFmpeg)
+        run: cargo xtask prepare-deps --platform windows --gpl
 
-      - name: Build streamer (without GPL for speed)
-        run: cargo build -p alvr_server_openvr --release
+      - name: Build streamer with GPL
+        run: cargo xtask build-streamer --release --gpl
+
+      - name: Download ARM64 Encoder
+        uses: actions/download-artifact@v4
+        with:
+          name: alvr-encoder-arm64
+          path: build/alvr_streamer_windows/arm64-encoder
+
+      - name: Prepare final artifacts
+        run: |
+          mkdir -p final-artifacts
+          # 复制整个 streamer 目录
+          cp -r build/alvr_streamer_windows final-artifacts/
+          # 确保 ARM64 编码器在正确位置
+          ls -la final-artifacts/alvr_streamer_windows/arm64-encoder/
+        shell: bash
+
+      - name: Upload Complete Streamer
+        uses: actions/upload-artifact@v4
+        with:
+          name: alvr-streamer-windows-arm64
+          path: final-artifacts/alvr_streamer_windows
+          retention-days: 30

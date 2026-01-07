@@ -9,9 +9,10 @@ EncoderIpcClient::EncoderIpcClient() { }
 
 EncoderIpcClient::~EncoderIpcClient() { Shutdown(); }
 
-bool EncoderIpcClient::Initialize(uint32_t width, uint32_t height) {
+bool EncoderIpcClient::Initialize(uint32_t width, uint32_t height, const std::string& codec) {
     m_width = width;
     m_height = height;
+    m_codec = codec;
 
     // 打开或创建共享内存
     m_sharedMemory = OpenFileMappingW(FILE_MAP_ALL_ACCESS, FALSE, SHARED_MEM_NAME);
@@ -128,7 +129,9 @@ bool EncoderIpcClient::LaunchEncoderProcess() {
     std::wstring cmdLine = encoderPath.wstring();
     cmdLine += L" " + std::to_wstring(m_width);
     cmdLine += L" " + std::to_wstring(m_height);
-    cmdLine += L" h264"; // TODO: 从设置获取 codec
+    // 传递 codec 参数 (h264 或 hevc)
+    std::wstring wcodec(m_codec.begin(), m_codec.end());
+    cmdLine += L" " + wcodec;
 
     STARTUPINFOW si = { sizeof(si) };
     PROCESS_INFORMATION pi = {};

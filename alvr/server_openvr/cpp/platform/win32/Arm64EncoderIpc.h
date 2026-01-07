@@ -13,6 +13,7 @@ typedef unsigned long DWORD;
 #include <cstddef>
 #include <cstdint>
 #include <memory>
+#include <string>
 #include <vector>
 
 namespace Arm64EncoderIpc {
@@ -71,7 +72,8 @@ public:
     ~EncoderIpcClient();
 
     // 初始化 IPC 连接
-    bool Initialize(uint32_t width, uint32_t height);
+    // codec: "h264" 或 "hevc"
+    bool Initialize(uint32_t width, uint32_t height, const std::string& codec = "h264");
 
     // 关闭 IPC 连接
     void Shutdown();
@@ -115,6 +117,7 @@ private:
 
     uint32_t m_width = 0;
     uint32_t m_height = 0;
+    std::string m_codec = "h264";
     bool m_connected = false;
 };
 
