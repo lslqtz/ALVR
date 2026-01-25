@@ -33,8 +33,9 @@ fn main() -> Result<()> {
     let width: u32 = args.get(1).and_then(|s| s.parse().ok()).unwrap_or(1920);
     let height: u32 = args.get(2).and_then(|s| s.parse().ok()).unwrap_or(1080);
     let codec: &str = args.get(3).map(|s| s.as_str()).unwrap_or("h264");
+    let use_10bit = args.get(4).is_some_and(|s| s == "true" || s == "1" || s == "10bit");
     
-    info!("Encoder config: {}x{}, codec: {}", width, height, codec);
+    info!("Encoder config: {}x{}, codec: {}, 10-bit: {}", width, height, codec, use_10bit);
     
     // 初始化 IPC
     let mut ipc = EncoderIpc::new(width, height)
@@ -43,7 +44,7 @@ fn main() -> Result<()> {
     info!("IPC initialized, waiting for frames...");
     
     // 初始化编码器
-    let mut video_encoder = encoder::VideoEncoder::new(width, height, codec)
+    let mut video_encoder = encoder::VideoEncoder::new(width, height, codec, use_10bit)
         .context("Failed to initialize video encoder")?;
     
     info!("Video encoder initialized");

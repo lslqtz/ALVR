@@ -128,6 +128,8 @@ bool EncoderIpcClient::LaunchEncoderProcess() {
 
     // 构建命令行
     std::wstring cmdLine = encoderPath.wstring();
+    cmdLine += L" " + std::to_wstring(m_width);
+    cmdLine += L" " + std::to_wstring(m_height);
     std::wstring wcodec(m_codec.begin(), m_codec.end());
     cmdLine += L" " + wcodec;
 
