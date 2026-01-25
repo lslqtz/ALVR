@@ -26,7 +26,7 @@ pub struct VideoEncoder {
 }
 
 impl VideoEncoder {
-    pub fn new(width: u32, height: u32, codec_name: &str) -> Result<Self> {
+    pub fn new(width: u32, height: u32, codec_name: &str, use_10bit: bool) -> Result<Self> {
         unsafe {
             // 查找编码器
             let codec_id = match codec_name {
@@ -51,10 +51,30 @@ impl VideoEncoder {
             (*codec_ctx).height = height as i32;
             (*codec_ctx).time_base = ffi::AVRational { num: 1, den: 1_000_000_000 }; // nanoseconds
             (*codec_ctx).framerate = ffi::AVRational { num: 72, den: 1 };
-            (*codec_ctx).pix_fmt = ffi::AVPixelFormat_AV_PIX_FMT_YUV420P;
+            (*codec_ctx).pix_fmt = if use_10bit {
+                ffi::AVPixelFormat_AV_PIX_FMT_YUV420P10LE
+            } else {
+                ffi::AVPixelFormat_AV_PIX_FMT_YUV420P
+            };
             (*codec_ctx).gop_size = 0; // All intra
             (*codec_ctx).max_b_frames = 0;
             (*codec_ctx).bit_rate = 30_000_000; // 30 Mbps default
+            
+            // 设置 profile
+            if codec_id == ffi::AVCodecID_AV_CODEC_ID_HEVC {
+                if use_10bit {
+                    (*codec_ctx).profile = ffi::FF_PROFILE_HEVC_MAIN_10 as i32;
+                    (*codec_ctx).color_primaries = ffi::AVColorPrimaries_AVCOL_PRI_BT2020;
+                    (*codec_ctx).color_trc = ffi::AVColorTransferCharacteristic_AVCOL_TRC_SMPTE2084;
+                    (*codec_ctx).colorspace = ffi::AVColorSpace_AVCOL_SPC_BT2020_NCL;
+                } else {
+                    (*codec_ctx).profile = ffi::FF_PROFILE_HEVC_MAIN as i32;
+                    (*codec_ctx).color_primaries = ffi::AVColorPrimaries_AVCOL_PRI_BT709;
+                    (*codec_ctx).color_trc = ffi::AVColorTransferCharacteristic_AVCOL_TRC_BT709;
+                    (*codec_ctx).colorspace = ffi::AVColorSpace_AVCOL_SPC_BT709;
+                }
+                (*codec_ctx).color_range = ffi::AVColorRange_AVCOL_RANGE_JPEG;
+            }
             
             // 设置低延迟选项
             let mut opts: *mut ffi::AVDictionary = ptr::null_mut();
@@ -84,7 +104,7 @@ impl VideoEncoder {
             
             (*frame).width = width as i32;
             (*frame).height = height as i32;
-            (*frame).format = ffi::AVPixelFormat_AV_PIX_FMT_YUV420P as i32;
+            (*frame).format = (*codec_ctx).pix_fmt;
             
             let ret = ffi::av_frame_get_buffer(frame, 0);
             if ret < 0 {
@@ -193,13 +213,15 @@ impl VideoEncoder {
                 PixelFormat::P010 => ffi::AVPixelFormat_AV_PIX_FMT_P010LE,
             };
             
+            let dst_format = (*self.codec_ctx).pix_fmt;
+            
             self.sws_ctx = ffi::sws_getContext(
                 self.width as i32,
                 self.height as i32,
                 src_format,
                 self.width as i32,
                 self.height as i32,
-                ffi::AVPixelFormat_AV_PIX_FMT_YUV420P,
+                dst_format,
                 ffi::SWS_BILINEAR as i32,
                 ptr::null_mut(),
                 ptr::null_mut(),

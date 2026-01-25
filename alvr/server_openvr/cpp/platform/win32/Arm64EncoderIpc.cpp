@@ -1,5 +1,6 @@
 #include "Arm64EncoderIpc.h"
 #include "alvr_server/Logger.h"
+#include "alvr_server/Settings.h"
 #include <filesystem>
 #include <vector>
 
@@ -118,7 +119,7 @@ bool EncoderIpcClient::LaunchEncoderProcess() {
     GetModuleFileNameW(nullptr, modulePath, MAX_PATH);
 
     std::filesystem::path exePath(modulePath);
-    std::filesystem::path encoderPath = exePath.parent_path() / "alvr_encoder_arm64.exe";
+    std::filesystem::path encoderPath = exePath.parent_path() / "arm64" / "alvr_encoder_arm64.exe";
 
     if (!std::filesystem::exists(encoderPath)) {
         Error("ARM64 encoder not found at: %ls\n", encoderPath.c_str());
@@ -127,11 +128,12 @@ bool EncoderIpcClient::LaunchEncoderProcess() {
 
     // 构建命令行
     std::wstring cmdLine = encoderPath.wstring();
-    cmdLine += L" " + std::to_wstring(m_width);
-    cmdLine += L" " + std::to_wstring(m_height);
-    // 传递 codec 参数 (h264 或 hevc)
     std::wstring wcodec(m_codec.begin(), m_codec.end());
     cmdLine += L" " + wcodec;
+
+    if (Settings::Instance().m_use10bitEncoder) {
+        cmdLine += L" 10bit";
+    }
 
     STARTUPINFOW si = { sizeof(si) };
     PROCESS_INFORMATION pi = {};

@@ -13,7 +13,7 @@
 
 VideoEncoderSW::VideoEncoderSW(std::shared_ptr<CD3DRender> d3dRender, int width, int height)
     : m_d3dRender(d3dRender)
-    , m_codec(ALVR_CODEC_H264)
+    , m_codec((ALVR_CODEC)Settings::Instance().m_codec)
     , m_refreshRate(Settings::Instance().m_refreshRate)
     , m_renderWidth(width)
     , m_renderHeight(height)
@@ -65,25 +65,38 @@ void VideoEncoderSW::Initialize() {
     av_dict_set(&opt, "preset", "ultrafast", 0);
     av_dict_set(&opt, "tune", "zerolatency", 0);
 
-    switch (settings.m_h264Profile) {
-    case ALVR_H264_PROFILE_BASELINE:
-        m_codecContext->profile = FF_PROFILE_H264_BASELINE;
-        break;
-    case ALVR_H264_PROFILE_MAIN:
-        m_codecContext->profile = FF_PROFILE_H264_MAIN;
-        break;
-    default:
-    case ALVR_H264_PROFILE_HIGH:
-        m_codecContext->profile = FF_PROFILE_H264_HIGH;
-        break;
+    if (m_codec == ALVR_CODEC_H264) {
+        switch (settings.m_h264Profile) {
+        case ALVR_H264_PROFILE_BASELINE:
+            m_codecContext->profile = FF_PROFILE_H264_BASELINE;
+            break;
+        case ALVR_H264_PROFILE_MAIN:
+            m_codecContext->profile = FF_PROFILE_H264_MAIN;
+            break;
+        default:
+        case ALVR_H264_PROFILE_HIGH:
+            m_codecContext->profile = FF_PROFILE_H264_HIGH;
+            break;
+        }
+    } else if (m_codec == ALVR_CODEC_HEVC) {
+        if (settings.m_use10bitEncoder) {
+            m_codecContext->profile = FF_PROFILE_HEVC_MAIN_10;
+        } else {
+            m_codecContext->profile = FF_PROFILE_HEVC_MAIN;
+        }
     }
-    switch (settings.m_entropyCoding) {
-    case ALVR_CABAC:
-        av_dict_set(&opt, "coder", "ac", 0);
-        break;
-    case ALVR_CAVLC:
-        av_dict_set(&opt, "coder", "vlc", 0);
-        break;
+    // 对于 H264 Baseline profile，必须使用 CAVLC（不支持 CABAC）
+    if (m_codec == ALVR_CODEC_H264 && m_codecContext->profile == FF_PROFILE_H264_BASELINE) {
+        av_dict_set(&opt, "coder", "vlc", 0); // 强制 CAVLC
+    } else {
+        switch (settings.m_entropyCoding) {
+        case ALVR_CABAC:
+            av_dict_set(&opt, "coder", "ac", 0);
+            break;
+        case ALVR_CAVLC:
+            av_dict_set(&opt, "coder", "vlc", 0);
+            break;
+        }
     }
 
     m_codecContext->width = m_renderWidth;
@@ -91,8 +104,9 @@ void VideoEncoderSW::Initialize() {
     m_codecContext->time_base = AVRational { 1, (int)(1e9) };
     m_codecContext->framerate = AVRational { settings.m_refreshRate, 1 };
     m_codecContext->sample_aspect_ratio = AVRational { 1, 1 };
-    m_codecContext->pix_fmt
-        = settings.m_use10bitEncoder ? AV_PIX_FMT_YUV420P10 : AV_PIX_FMT_YUV420P;
+    // libx264 不支持 10-bit，只有 HEVC 支持
+    bool use10bit = settings.m_use10bitEncoder && (m_codec == ALVR_CODEC_HEVC);
+    m_codecContext->pix_fmt = use10bit ? AV_PIX_FMT_YUV420P10LE : AV_PIX_FMT_YUV420P;
     m_codecContext->color_range = AVCOL_RANGE_JPEG;
     if (settings.m_enableHdr) {
         m_codecContext->color_primaries = AVCOL_PRI_BT2020;
@@ -104,7 +118,8 @@ void VideoEncoderSW::Initialize() {
         m_codecContext->colorspace = AVCOL_SPC_BT709;
     }
     m_codecContext->max_b_frames = 0;
-    m_codecContext->gop_size = 0;
+    // libx264 不接受 gop_size = 0，使用 1 表示全 I 帧
+    m_codecContext->gop_size = 1;
     m_codecContext->bit_rate = m_bitrateInMBits * 1'000'000L;
     m_codecContext->rc_buffer_size = m_codecContext->bit_rate / settings.m_refreshRate * 1.1;
     switch (settings.m_rateControlMode) {
@@ -118,7 +133,8 @@ void VideoEncoderSW::Initialize() {
         break;
     }
     m_codecContext->rc_max_rate = m_codecContext->bit_rate;
-    m_codecContext->thread_count = settings.m_swThreadCount;
+    // 确保线程数至少为 1
+    m_codecContext->thread_count = settings.m_swThreadCount > 0 ? settings.m_swThreadCount : 1;
 
     if ((err = avcodec_open2(m_codecContext, codec, &opt)))
         throw MakeException("Cannot open video encoder codec: %d", err);

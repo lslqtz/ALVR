@@ -41,7 +41,7 @@ use std::{
 };
 
 const RETRY_CONNECT_MIN_INTERVAL: Duration = Duration::from_secs(1);
-const HANDSHAKE_ACTION_TIMEOUT: Duration = Duration::from_secs(2);
+const HANDSHAKE_ACTION_TIMEOUT: Duration = Duration::from_secs(5);
 pub const STREAMING_RECV_TIMEOUT: Duration = Duration::from_millis(500);
 const REAL_TIME_UPDATE_INTERVAL: Duration = Duration::from_secs(1);
 
@@ -435,6 +435,7 @@ pub fn handshake_loop(ctx: Arc<ConnectionContext>, lifecycle_state: Arc<RwLock<L
                     )
                 {
                     error!("Could not initiate connection for {client_hostname}: {e}");
+                    info!("Current protocol ID hash: {}", alvr_common::protocol_id_u64());
                 }
 
                 thread::sleep(RETRY_CONNECT_MIN_INTERVAL);
@@ -462,7 +463,7 @@ fn try_connect(
     dbg_connection!("try_connect: Finding client and creating control socket");
 
     let (proto_socket, client_ip) = ProtoControlSocket::connect_to(
-        Duration::from_secs(1),
+        Duration::from_secs(5),
         PeerType::AnyClient(client_ips.keys().cloned().collect()),
     )?;
 
