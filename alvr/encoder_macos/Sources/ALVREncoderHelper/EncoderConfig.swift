@@ -90,7 +90,7 @@ struct EncoderConfig {
         config.enableLowLatencyRateControl = (flags & 0x40) != 0
 
         // 画质 (uint8 0-100 → 0.0-1.0)
-        config.quality = Double(data[offset]) / 100.0; offset += 1
+        config.qualityValue = Double(data[offset]) / 100.0; offset += 1
 
         // 色域
         config.colorSpace = ColorSpaceConfig(rawValue: data[offset]) ?? .bt709; offset += 1

@@ -1842,18 +1842,21 @@ pub fn session_settings_default() -> SettingsDefault {
                     force_software_encoding: false,
                     thread_count: 0,
                 },
-                macos_encoder: Switch::Disabled(MacosEncoderConfig {
-                    host: "".into(),
-                    prioritize_speed: true,
-                    realtime: true,
-                    enable_low_latency_rate_control: true,
-                    allow_frame_reordering: false,
-                    use_cabac: true,
-                    quality: 50,
-                    filler_data: false,
-                    peak_bitrate_ratio: 1.5,
-                    verbose_logging: false,
-                }),
+                macos_encoder: SwitchDefault {
+                    enabled: false,
+                    content: MacosEncoderConfigDefault {
+                        host: "".into(),
+                        prioritize_speed: true,
+                        realtime: true,
+                        enable_low_latency_rate_control: true,
+                        allow_frame_reordering: false,
+                        use_cabac: true,
+                        quality: 50,
+                        filler_data: false,
+                        peak_bitrate_ratio: 1.5,
+                        verbose_logging: false,
+                    },
+                },
             },
             mediacodec_extra_options: {
                 fn int32_default(int32: i32) -> MediacodecPropertyDefault {
