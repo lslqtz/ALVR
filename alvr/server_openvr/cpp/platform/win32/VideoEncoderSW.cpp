@@ -202,6 +202,10 @@ void VideoEncoderSW::Shutdown() {
         m_scalerContext = nullptr;
     }
 
+    if (m_stagingTex) {
+        m_stagingTex.Reset();
+    }
+
     Debug("Successfully shutdown VideoEncoderSW.\n");
 }
 

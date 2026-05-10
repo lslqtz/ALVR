@@ -505,6 +505,9 @@ pub unsafe extern "C" fn alvr_duration_until_next_vsync(out_ns: *mut u64) -> boo
     }
 }
 
+use std::sync::atomic::{AtomicBool, Ordering};
+
+static MACOS_ENCODER_ACTIVE: AtomicBool = AtomicBool::new(false);
 static MACOS_ENCODER_CLIENT: LazyLock<Mutex<Option<MacosEncoderClient>>> =
     LazyLock::new(|| Mutex::new(None));
 
@@ -552,15 +555,18 @@ pub unsafe extern "C" fn alvr_start_macos_encoder(
     match MacosEncoderClient::connect_and_start(
         &host, width, height, codec, internal_settings,
         move |timestamp_ns, is_idr, data| {
-            // Need to cast the data to a mutable pointer just for the C API, 
-            // ALVR's send_video promises not to mutate it in practice (it just copies it).
-            (wrapper.cb)(timestamp_ns, data.as_ptr() as *mut u8, data.len() as i32, is_idr);
+            if MACOS_ENCODER_ACTIVE.load(Ordering::SeqCst) {
+                // Need to cast the data to a mutable pointer just for the C API, 
+                // ALVR's send_video promises not to mutate it in practice (it just copies it).
+                (wrapper.cb)(timestamp_ns, data.as_ptr() as *mut u8, data.len() as i32, is_idr);
+            }
         }
     ) {
         Ok(client) => {
             if settings.verbose_logging {
                 log::info!("macOS Encoder FFI: Connection successful!");
             }
+            MACOS_ENCODER_ACTIVE.store(true, Ordering::SeqCst);
             *MACOS_ENCODER_CLIENT.lock() = Some(client);
             true
         }
@@ -605,6 +611,7 @@ pub unsafe extern "C" fn alvr_send_raw_video_frame_macos(
 
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn alvr_stop_macos_encoder() {
+    MACOS_ENCODER_ACTIVE.store(false, Ordering::SeqCst);
     *MACOS_ENCODER_CLIENT.lock() = None;
 }
 

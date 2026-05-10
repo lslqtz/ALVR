@@ -289,7 +289,7 @@ final class VideoToolboxEncoder {
         case .p010:
             pixelFormat = kCVPixelFormatType_420YpCbCr10BiPlanarVideoRange
         case .rgba:
-            pixelFormat = kCVPixelFormatType_32RGBA
+            pixelFormat = kCVPixelFormatType_32BGRA
         }
 
         var pixelBuffer: CVPixelBuffer?
