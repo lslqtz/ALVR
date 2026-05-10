@@ -3,6 +3,21 @@
 #include "ALVR-common/packet_types.h"
 #include <string>
 
+struct MacosEncoderConfig {
+    bool enabled;
+    std::string host;
+    bool prioritize_speed;
+    bool realtime;
+    bool enable_low_latency_rate_control;
+    bool allow_frame_reordering;
+    bool use_cabac;
+    uint32_t quality;
+    bool filler_data;
+    float peak_bitrate_ratio;
+    bool verbose_logging;
+};
+
+
 class Settings {
     static Settings m_Instance;
     bool m_loaded;
@@ -60,7 +75,7 @@ public:
     uint32_t m_entropyCoding;
     bool m_force_sw_encoding;
     uint32_t m_swThreadCount;
-    std::string m_macosEncoderHost;
+    MacosEncoderConfig m_macosEncoder;
 
     uint32_t m_nvencTuningPreset;
     uint32_t m_nvencMultiPass;

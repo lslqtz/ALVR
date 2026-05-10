@@ -82,7 +82,20 @@ void Settings::Load() {
         m_nvencQualityPreset = (uint32_t)config.get("nvenc_quality_preset").get<int64_t>();
         m_force_sw_encoding = config.get("force_sw_encoding").get<bool>();
         m_swThreadCount = (int32_t)config.get("sw_thread_count").get<int64_t>();
-        m_macosEncoderHost = config.get("macos_encoder_host").get<std::string>();
+        
+        auto macos_encoder = config.get("macos_encoder");
+        m_macosEncoder.enabled = macos_encoder.get("enabled").get<bool>();
+        auto macos_content = macos_encoder.get("content");
+        m_macosEncoder.host = macos_content.get("host").get<std::string>();
+        m_macosEncoder.prioritize_speed = macos_content.get("prioritize_speed").get<bool>();
+        m_macosEncoder.realtime = macos_content.get("realtime").get<bool>();
+        m_macosEncoder.enable_low_latency_rate_control = macos_content.get("enable_low_latency_rate_control").get<bool>();
+        m_macosEncoder.allow_frame_reordering = macos_content.get("allow_frame_reordering").get<bool>();
+        m_macosEncoder.use_cabac = macos_content.get("use_cabac").get<bool>();
+        m_macosEncoder.quality = (uint32_t)macos_content.get("quality").get<int64_t>();
+        m_macosEncoder.filler_data = macos_content.get("filler_data").get<bool>();
+        m_macosEncoder.peak_bitrate_ratio = (float)macos_content.get("peak_bitrate_ratio").get<double>();
+        m_macosEncoder.verbose_logging = macos_content.get("verbose_logging").get<bool>();
 
         m_nvencTuningPreset = (uint32_t)config.get("nvenc_tuning_preset").get<int64_t>();
         m_nvencMultiPass = (uint32_t)config.get("nvenc_multi_pass").get<int64_t>();

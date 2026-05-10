@@ -45,7 +45,7 @@ void VideoEncoderSW::Initialize() {
     Debug("Initializing VideoEncoderSW.\n");
 
     if (Settings::Instance().m_macosEncoder.enabled) {
-        auto& config = Settings::Instance().m_macosEncoder.content;
+        auto& config = Settings::Instance().m_macosEncoder;
         const char* host = config.host.c_str();
         if (config.host.empty()) {
             Error("macOS Remote Encoder: IP address is empty! Falling back...\n");
