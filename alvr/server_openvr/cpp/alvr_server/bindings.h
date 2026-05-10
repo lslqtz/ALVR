@@ -168,6 +168,7 @@ extern "C" bool alvr_start_macos_encoder(
     void (*video_send_callback)(unsigned long long timestamp_ns, unsigned char* buffer_ptr, int len, bool is_idr)
 );
 extern "C" void alvr_update_macos_encoder_params(unsigned long long bitrate_bps, float framerate);
+extern "C" void alvr_stop_macos_encoder();
 extern "C" void alvr_send_raw_video_frame_macos(
     unsigned long long timestamp_ns,
     bool insert_idr,

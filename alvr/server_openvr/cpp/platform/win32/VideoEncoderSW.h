@@ -61,6 +61,7 @@ private:
 
     std::unique_ptr<Arm64EncoderIpc::EncoderIpcClient> m_arm64Encoder;
     bool m_useArm64Encoder = false;
+    bool m_useMacEncoder = false;
 
     // 尝试初始化 ARM64 编码器，失败则使用内置 FFmpeg
     bool TryInitArm64Encoder();
