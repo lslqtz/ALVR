@@ -591,10 +591,14 @@ pub unsafe extern "C" fn alvr_send_raw_video_frame_macos(
     buffer_ptr: *const u8,
     len: i32,
 ) {
-    if let Some(client) = &mut *MACOS_ENCODER_CLIENT.lock() {
-        let buffer = unsafe { std::slice::from_raw_parts(buffer_ptr, len as usize) };
-        if let Err(e) = client.send_frame(timestamp_ns, insert_idr, width, height, row_pitch, pixel_format, buffer) {
-            log::error!("Failed to send frame to macOS encoder: {}", e);
+    let buffer = unsafe { std::slice::from_raw_parts(buffer_ptr, len as usize) };
+    let mut client_lock = MACOS_ENCODER_CLIENT.lock();
+    if let Some(client) = client_lock.as_mut() {
+        if let Err(e) = client.send_frame(
+            timestamp_ns, insert_idr, width, height, row_pitch, pixel_format, buffer
+        ) {
+            log::error!("macOS Encoder FFI: Connection lost, dropping client: {}", e);
+            *client_lock = None;
         }
     }
 }

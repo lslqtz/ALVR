@@ -10,6 +10,7 @@ enum MessageType: UInt32 {
     case packet          = 0x04
     case updateParams    = 0x05
     case shutdown        = 0x06
+    case decode          = 0x07
 }
 
 /// 像素格式，与 ALVR Arm64EncoderIpc::PixelFormat 对齐
@@ -157,6 +158,22 @@ struct UpdateParamsMessage {
         let bitrate = data.readUInt64(at: &offset)
         let framerate = data.readUInt32(at: &offset)
         return UpdateParamsMessage(bitrateBps: bitrate, framerate: framerate)
+    }
+}
+
+/// 解码请求 (VM → Mac)
+struct DecodeMessage {
+    let timestampNs: UInt64
+    let isIDR: Bool
+    let nalData: Data
+
+    static func decode(from data: Data) -> DecodeMessage? {
+        guard data.count >= 9 else { return nil }
+        var offset = 0
+        let ts = data.readUInt64(at: &offset)
+        let isIDR = data[offset] != 0; offset += 1
+        let nalData = data.subdata(in: offset..<data.count)
+        return DecodeMessage(timestampNs: ts, isIDR: isIDR, nalData: nalData)
     }
 }
 

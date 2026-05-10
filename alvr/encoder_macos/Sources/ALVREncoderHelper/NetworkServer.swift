@@ -7,6 +7,7 @@ final class NetworkServer {
     private var listener: NWListener?
     private var activeConnection: NWConnection?
     private var encoder: VideoToolboxEncoder?
+    private var decoder: VideoToolboxDecoder?
     private let port: UInt16
     private let queue = DispatchQueue(label: "alvr.encoder.network", qos: .userInteractive)
 
@@ -52,6 +53,7 @@ final class NetworkServer {
         activeConnection?.cancel()
         listener?.cancel()
         encoder = nil
+        decoder = nil
         print("[Server] Stopped")
     }
 
@@ -63,6 +65,7 @@ final class NetworkServer {
             print("[Server] Replacing existing connection")
             existing.cancel()
             encoder = nil
+            decoder = nil
         }
 
         activeConnection = connection
@@ -78,10 +81,12 @@ final class NetworkServer {
                 print("[Server] Connection failed: \(error)")
                 self?.activeConnection = nil
                 self?.encoder = nil
+                self?.decoder = nil
             case .cancelled:
                 print("[Server] Connection closed")
                 self?.activeConnection = nil
                 self?.encoder = nil
+                self?.decoder = nil
             default:
                 break
             }
@@ -158,6 +163,8 @@ final class NetworkServer {
             handleUpdateParams(body: body)
         case .shutdown:
             handleShutdown()
+        case .decode:
+            handleDecode(body: body)
         default:
             print("[Server] Unhandled message type: \(type)")
         }
@@ -184,11 +191,20 @@ final class NetworkServer {
             config.allowFrameReordering = msg.allowFrameReordering
 
             encoder = try VideoToolboxEncoder(config: config)
+            decoder = VideoToolboxDecoder(codec: msg.codec)
 
             // 设置编码回调
             encoder?.onEncodedPacket = { [weak self] timestampNs, isIDR, nalData in
                 let packet = EncodedPacket(timestampNs: timestampNs, isIDR: isIDR, data: nalData)
                 self?.sendData(packet.encode(), connection: connection)
+            }
+
+            // 设置解码回调
+            decoder?.onDecodedFrame = { timestampNs, pixelBuffer in
+                // 解码成功！
+                let width = CVPixelBufferGetWidth(pixelBuffer)
+                let height = CVPixelBufferGetHeight(pixelBuffer)
+                // TODO: 这里可以发回给 VM 或显示
             }
 
             sendInitAck(success: true, message: "OK", connection: connection)
@@ -231,7 +247,31 @@ final class NetworkServer {
     private func handleShutdown() {
         print("[Server] Shutdown requested")
         encoder = nil
+        decoder = nil
         activeConnection?.cancel()
+    }
+
+    private func handleDecode(body: Data) {
+        guard let msg = DecodeMessage.decode(from: body) else {
+            print("[Server] Invalid decode message")
+            return
+        }
+
+        // 延迟初始化解码器
+        if decoder == nil {
+            // 目前默认使用与编码相同的 codec 类型，或者从初始化包中获取
+            // 这里我们先根据 NAL 数据初步判断，或者默认 H.264
+            decoder = VideoToolboxDecoder(codec: .h264)
+            decoder?.onDecodedFrame = { timestampNs, pixelBuffer in
+                // 解码成功！
+                let width = CVPixelBufferGetWidth(pixelBuffer)
+                let height = CVPixelBufferGetHeight(pixelBuffer)
+                // 这里可以扩展为发送给渲染器或者发回给 VM
+                // print("[Server] Decoded frame: \(width)x\(height) at \(timestampNs)")
+            }
+        }
+
+        decoder?.decodeNAL(data: msg.nalData, timestampNs: msg.timestampNs, isIDR: msg.isIDR)
     }
 
     // MARK: - Sending

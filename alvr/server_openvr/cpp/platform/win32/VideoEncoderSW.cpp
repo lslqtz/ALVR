@@ -35,9 +35,8 @@ void VideoEncoderSW::LibVALog(void* v, int level, const char* data, va_list va) 
 }
 
 static int g_macos_codec = 0;
-
-void VideoSend(uint64_t timestampNs, uint8_t* buffer, int len, bool isIDR) {
-    // 使用初始化时保存的 codec
+void MacosVideoSend(uint64_t timestampNs, uint8_t* buffer, int len, bool isIDR) {
+    // 使用初始化时保存的 codec，通过 ALVR 标准解析器发送
     ParseFrameNals(g_macos_codec, buffer, len, timestampNs, isIDR);
 }
 
@@ -52,11 +51,8 @@ void VideoEncoderSW::Initialize() {
             Error("macOS Remote Encoder: IP address is empty! Falling back...\n");
         } else {
             uint8_t codec = (m_codec == ALVR_CODEC_H264) ? 0 : ((m_codec == ALVR_CODEC_HEVC) ? 1 : 2);
-            g_macos_codec = m_codec; // 保存 codec 供回调使用
-            if (config.verbose_logging) {
-                Info("macOS Remote Encoder: Attempting to connect to %s (codec: %d)...\n", host, codec);
-            }
-            
+            g_macos_codec = m_codec;
+
             MacosEncoderSettings settings;
             settings.prioritize_speed = config.prioritize_speed;
             settings.realtime = config.realtime;
@@ -64,14 +60,18 @@ void VideoEncoderSW::Initialize() {
             settings.allow_frame_reordering = config.allow_frame_reordering;
             settings.verbose_logging = config.verbose_logging;
 
-            if (alvr_start_macos_encoder(host, m_renderWidth, m_renderHeight, codec, settings, VideoSend)) {
+            if (config.verbose_logging) {
+                Info("macOS Remote Encoder: Attempting to connect to %s (codec: %d)...\n", host, codec);
+            }
+            
+            if (alvr_start_macos_encoder(host, m_renderWidth, m_renderHeight, codec, settings, MacosVideoSend)) {
                 if (config.verbose_logging) {
                     Info("macOS Remote Encoder: Connected and initialized successfully!\n");
                 }
                 m_useMacEncoder = true;
                 return;
             } else {
-                Error("macOS Remote Encoder: Failed to connect to %s. Check Mac Helper and Network.\n", host);
+                Error("macOS Remote Encoder: Failed to connect to %s. Fallback to other encoders.\n", host);
             }
         }
     }
