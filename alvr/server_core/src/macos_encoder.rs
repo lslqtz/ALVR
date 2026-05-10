@@ -22,17 +22,30 @@ pub struct MacosEncoderClient {
     is_running: Arc<AtomicBool>,
 }
 
+pub struct MacosEncoderSettings {
+    pub prioritize_speed: bool,
+    pub realtime: bool,
+    pub enable_low_latency_rate_control: bool,
+    pub allow_frame_reordering: bool,
+    pub verbose_logging: bool,
+}
+
 impl MacosEncoderClient {
     pub fn connect_and_start(
         host: &str,
         width: u32,
         height: u32,
         codec: u8,
-        realtime: bool,
+        settings: MacosEncoderSettings,
         nal_callback: impl Fn(u64, bool, &[u8]) + Send + Sync + 'static,
     ) -> Result<Self> {
-        let addr: SocketAddr = host.parse()?;
-        let mut stream = TcpStream::connect_timeout(&addr, Duration::from_secs(3))?;
+        let addr_str = if host.contains(':') {
+            host.to_string()
+        } else {
+            format!("{}:9945", host)
+        };
+        let addr: SocketAddr = addr_str.parse()?;
+        let mut stream = TcpStream::connect_timeout(&addr, Duration::from_secs(1))?;
         stream.set_nodelay(true)?;
         stream.set_read_timeout(Some(Duration::from_millis(500)))?;
         stream.set_write_timeout(Some(Duration::from_millis(500)))?;
@@ -46,9 +59,15 @@ impl MacosEncoderClient {
         // 伪造 bitrate 和 framerate 给 InitMessage，因为在 connect_and_start 这里拿不到
         // 我们传入默认的或者从上下文中拿，目前简单塞点初始值，后续 UpdateParams 会修正
         let initial_bitrate_bps: u64 = 30_000_000;
-        let initial_framerate: u32 = if realtime { 90 } else { 60 };
+        let initial_framerate: u32 = if settings.realtime { 90 } else { 60 };
         body.extend_from_slice(&initial_bitrate_bps.to_le_bytes());
         body.extend_from_slice(&initial_framerate.to_le_bytes());
+
+        // 新增详细设置
+        body.push(if settings.prioritize_speed { 1 } else { 0 });
+        body.push(if settings.realtime { 1 } else { 0 });
+        body.push(if settings.enable_low_latency_rate_control { 1 } else { 0 });
+        body.push(if settings.allow_frame_reordering { 1 } else { 0 });
 
         Self::send_packet_sync(&mut stream, PROTOCOL_INIT, &body)?;
 

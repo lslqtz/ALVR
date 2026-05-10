@@ -1,0 +1,81 @@
+client:
+  name: basic
+  file-system: device-agnostic
+tools: {}
+targets:
+  "ALVREncoderHelper-arm64-apple-macosx-debug.exe": ["<ALVREncoderHelper-arm64-apple-macosx-debug.exe>"]
+  "ALVREncoderHelper-arm64-apple-macosx-debug.module": ["<ALVREncoderHelper-arm64-apple-macosx-debug.module>"]
+  "PackageStructure": ["<PackageStructure>"]
+  "main": ["<ALVREncoderHelper-arm64-apple-macosx-debug.exe>","<ALVREncoderHelper-arm64-apple-macosx-debug.module>"]
+  "test": ["<ALVREncoderHelper-arm64-apple-macosx-debug.exe>","<ALVREncoderHelper-arm64-apple-macosx-debug.module>"]
+default: "main"
+nodes:
+  "/Users/Bowen/Git/ALVR/alvr/encoder_macos/Sources/ALVREncoderHelper/":
+    is-directory-structure: true
+    content-exclusion-patterns: [".git",".build"]
+  "/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper":
+    is-mutated: true
+commands:
+  "/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper-entitlement.plist":
+    tool: write-auxiliary-file
+    inputs: ["<entitlement-plist>","<com.apple.security.get-task-allow>"]
+    outputs: ["/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper-entitlement.plist"]
+    description: "Write auxiliary file /Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper-entitlement.plist"
+
+  "/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/Users/Bowen/Git/ALVR/alvr/encoder_macos/Sources/ALVREncoderHelper/EncoderConfig.swift","/Users/Bowen/Git/ALVR/alvr/encoder_macos/Sources/ALVREncoderHelper/NetworkServer.swift","/Users/Bowen/Git/ALVR/alvr/encoder_macos/Sources/ALVREncoderHelper/Protocol.swift","/Users/Bowen/Git/ALVR/alvr/encoder_macos/Sources/ALVREncoderHelper/VideoToolboxDecoder.swift","/Users/Bowen/Git/ALVR/alvr/encoder_macos/Sources/ALVREncoderHelper/VideoToolboxEncoder.swift","/Users/Bowen/Git/ALVR/alvr/encoder_macos/Sources/ALVREncoderHelper/main.swift"]
+    outputs: ["/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/sources"]
+    description: "Write auxiliary file /Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/sources"
+
+  "/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.product/Objects.LinkFileList":
+    tool: write-auxiliary-file
+    inputs: ["<link-file-list>","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/EncoderConfig.swift.o","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/NetworkServer.swift.o","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/Protocol.swift.o","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/VideoToolboxDecoder.swift.o","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/VideoToolboxEncoder.swift.o","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/main.swift.o"]
+    outputs: ["/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.product/Objects.LinkFileList"]
+    description: "Write auxiliary file /Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.product/Objects.LinkFileList"
+
+  "/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt":
+    tool: write-auxiliary-file
+    inputs: ["<swift-get-version>","/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"]
+    outputs: ["/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"]
+    always-out-of-date: "true"
+    description: "Write auxiliary file /Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"
+
+  "<ALVREncoderHelper-arm64-apple-macosx-debug.exe>":
+    tool: phony
+    inputs: ["<ALVREncoderHelper-arm64-apple-macosx-debug.exe-CodeSigning>"]
+    outputs: ["<ALVREncoderHelper-arm64-apple-macosx-debug.exe>"]
+
+  "<ALVREncoderHelper-arm64-apple-macosx-debug.module>":
+    tool: phony
+    inputs: ["/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/EncoderConfig.swift.o","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/NetworkServer.swift.o","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/Protocol.swift.o","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/VideoToolboxDecoder.swift.o","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/VideoToolboxEncoder.swift.o","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/main.swift.o","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/Modules/ALVREncoderHelper.swiftmodule"]
+    outputs: ["<ALVREncoderHelper-arm64-apple-macosx-debug.module>"]
+
+  "C.ALVREncoderHelper-arm64-apple-macosx-debug.exe":
+    tool: shell
+    inputs: ["/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/EncoderConfig.swift.o","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/NetworkServer.swift.o","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/Protocol.swift.o","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/VideoToolboxDecoder.swift.o","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/VideoToolboxEncoder.swift.o","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/main.swift.o","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.product/Objects.LinkFileList"]
+    outputs: ["/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper"]
+    description: "Linking ./.build/arm64-apple-macosx/debug/ALVREncoderHelper"
+    args: ["/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc","-L","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug","-o","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper","-module-name","ALVREncoderHelper","-Xlinker","-no_warn_duplicate_libraries","-emit-executable","-Xlinker","-alias","-Xlinker","_ALVREncoderHelper_main","-Xlinker","_main","-Xlinker","-rpath","-Xlinker","@loader_path","@/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.product/Objects.LinkFileList","-Xlinker","-rpath","-Xlinker","/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-6.2/macosx","-target","arm64-apple-macosx13.0","-Xlinker","-add_ast_path","-Xlinker","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/Modules/ALVREncoderHelper.swiftmodule","-plugin-path","/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing","-sdk","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk","-F","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-I","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-L","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-g"]
+
+  "C.ALVREncoderHelper-arm64-apple-macosx-debug.exe-entitlements":
+    tool: shell
+    inputs: ["/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper-entitlement.plist"]
+    outputs: ["<ALVREncoderHelper-arm64-apple-macosx-debug.exe-CodeSigning>"]
+    description: "Applying debug entitlements to ./.build/arm64-apple-macosx/debug/ALVREncoderHelper"
+    args: ["codesign","--force","--sign","-","--entitlements","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper-entitlement.plist","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper"]
+
+  "C.ALVREncoderHelper-arm64-apple-macosx-debug.module":
+    tool: shell
+    inputs: ["/Users/Bowen/Git/ALVR/alvr/encoder_macos/Sources/ALVREncoderHelper/EncoderConfig.swift","/Users/Bowen/Git/ALVR/alvr/encoder_macos/Sources/ALVREncoderHelper/NetworkServer.swift","/Users/Bowen/Git/ALVR/alvr/encoder_macos/Sources/ALVREncoderHelper/Protocol.swift","/Users/Bowen/Git/ALVR/alvr/encoder_macos/Sources/ALVREncoderHelper/VideoToolboxDecoder.swift","/Users/Bowen/Git/ALVR/alvr/encoder_macos/Sources/ALVREncoderHelper/VideoToolboxEncoder.swift","/Users/Bowen/Git/ALVR/alvr/encoder_macos/Sources/ALVREncoderHelper/main.swift","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/sources"]
+    outputs: ["/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/EncoderConfig.swift.o","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/NetworkServer.swift.o","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/Protocol.swift.o","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/VideoToolboxDecoder.swift.o","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/VideoToolboxEncoder.swift.o","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/main.swift.o","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/Modules/ALVREncoderHelper.swiftmodule"]
+    description: "Compiling Swift Module 'ALVREncoderHelper' (6 sources)"
+    args: ["/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc","-module-name","ALVREncoderHelper","-emit-dependencies","-emit-module","-emit-module-path","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/Modules/ALVREncoderHelper.swiftmodule","-output-file-map","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/output-file-map.json","-incremental","-c","@/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ALVREncoderHelper.build/sources","-I","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/Modules","-target","arm64-apple-macosx13.0","-incremental","-enable-batch-mode","-serialize-diagnostics","-index-store-path","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/index/store","-Onone","-enable-testing","-j10","-DSWIFT_PACKAGE","-DDEBUG","-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE","-module-cache-path","/Users/Bowen/Git/ALVR/alvr/encoder_macos/.build/arm64-apple-macosx/debug/ModuleCache","-parseable-output","-Xfrontend","-entry-point-function-name","-Xfrontend","ALVREncoderHelper_main","-swift-version","5","-plugin-path","/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing","-sdk","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk","-F","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-I","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-L","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-g","-Xcc","-isysroot","-Xcc","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk","-Xcc","-F","-Xcc","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-Xcc","-fPIC","-Xcc","-g","-package-name","encoder_macos"]
+
+  "PackageStructure":
+    tool: package-structure-tool
+    inputs: ["/Users/Bowen/Git/ALVR/alvr/encoder_macos/Sources/ALVREncoderHelper/","/Users/Bowen/Git/ALVR/alvr/encoder_macos/Package.swift","/Users/Bowen/Git/ALVR/alvr/encoder_macos/Package.resolved"]
+    outputs: ["<PackageStructure>"]
+    description: "Planning build"
+    allow-missing-inputs: true
+

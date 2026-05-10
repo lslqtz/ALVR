@@ -34,19 +34,45 @@ void VideoEncoderSW::LibVALog(void* v, int level, const char* data, va_list va) 
     vprintf(sstream.str().c_str(), va);
 }
 
+static int g_macos_codec = 0;
+
+void VideoSend(uint64_t timestampNs, uint8_t* buffer, int len, bool isIDR) {
+    // 使用初始化时保存的 codec
+    ParseFrameNals(g_macos_codec, buffer, len, timestampNs, isIDR);
+}
+
 void VideoEncoderSW::Initialize() {
     int err;
     Debug("Initializing VideoEncoderSW.\n");
 
-    // 优先尝试 macOS 远程编码器
-    if (!Settings::Instance().m_macosEncoderHost.empty()) {
-        const char* host = Settings::Instance().m_macosEncoderHost.c_str();
-        uint8_t codec = (m_codec == ALVR_CODEC_H264) ? 0 : ((m_codec == ALVR_CODEC_HEVC) ? 1 : 2);
-        
-        if (alvr_start_macos_encoder(host, m_renderWidth, m_renderHeight, codec, true, VideoSend)) {
-            Info("Using macOS remote encoder via TCP (Rust FFI)\n");
-            m_useMacEncoder = true;
-            return;
+    if (Settings::Instance().m_macosEncoder.enabled) {
+        auto& config = Settings::Instance().m_macosEncoder.content;
+        const char* host = config.host.c_str();
+        if (config.host.empty()) {
+            Error("macOS Remote Encoder: IP address is empty! Falling back...\n");
+        } else {
+            uint8_t codec = (m_codec == ALVR_CODEC_H264) ? 0 : ((m_codec == ALVR_CODEC_HEVC) ? 1 : 2);
+            g_macos_codec = m_codec; // 保存 codec 供回调使用
+            if (config.verbose_logging) {
+                Info("macOS Remote Encoder: Attempting to connect to %s (codec: %d)...\n", host, codec);
+            }
+            
+            MacosEncoderSettings settings;
+            settings.prioritize_speed = config.prioritize_speed;
+            settings.realtime = config.realtime;
+            settings.enable_low_latency_rate_control = config.enable_low_latency_rate_control;
+            settings.allow_frame_reordering = config.allow_frame_reordering;
+            settings.verbose_logging = config.verbose_logging;
+
+            if (alvr_start_macos_encoder(host, m_renderWidth, m_renderHeight, codec, settings, VideoSend)) {
+                if (config.verbose_logging) {
+                    Info("macOS Remote Encoder: Connected and initialized successfully!\n");
+                }
+                m_useMacEncoder = true;
+                return;
+            } else {
+                Error("macOS Remote Encoder: Failed to connect to %s. Check Mac Helper and Network.\n", host);
+            }
         }
     }
 
@@ -194,9 +220,10 @@ void VideoEncoderSW::Transmit(
 
         // Setup staging texture if not defined yet
         if (!m_stagingTex) {
+            Info("macOS/ARM64 Encoder: Creating staging texture (%dx%d)...\n", m_stagingTexDesc.Width, m_stagingTexDesc.Height);
             HRESULT hr = SetupStagingTexture(pTexture);
             if (FAILED(hr)) {
-                Error("Failed to create staging texture: %p %ls", hr, GetErrorStr(hr).c_str());
+                Error("macOS/ARM64 Encoder: Failed to create staging texture: 0x%08X\n", hr);
                 return;
             }
         }

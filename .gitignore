@@ -72,4 +72,5 @@ ALVR-Launcher
 CMakeLists.txt
 cmake-build-debug/
 
-*.jks
+*.jksffmpeg_x64.zip
+alvr_update.iso.dmg

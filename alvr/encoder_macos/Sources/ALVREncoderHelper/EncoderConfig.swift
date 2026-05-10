@@ -33,6 +33,8 @@ struct EncoderConfig {
     var allowFrameReordering: Bool = false
     /// 是否允许临时编码层（SVC temporal layers）
     var allowTemporalCompression: Bool = false
+    /// 是否启用 macOS 11.3+ 低延迟速率控制
+    var enableLowLatencyRateControl: Bool = true
 
     // MARK: 画质
     /// 编码质量 (0.0-1.0)，仅在 VBR/Quality 模式下生效。
@@ -82,6 +84,7 @@ struct EncoderConfig {
         config.enableHDR = (flags & 0x08) != 0
         config.prioritizeQualityOverSpeed = (flags & 0x10) != 0
         config.allowTemporalCompression = (flags & 0x20) != 0
+        config.enableLowLatencyRateControl = (flags & 0x40) != 0
 
         // 画质 (uint8 0-100 → 0.0-1.0)
         config.quality = Double(data[offset]) / 100.0; offset += 1

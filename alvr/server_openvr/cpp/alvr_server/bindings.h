@@ -159,12 +159,20 @@ extern "C" void SetOpenvrProperty(void* instancePtr, FfiOpenvrProperty prop);
 extern "C" void SetOpenvrPropByDeviceID(unsigned long long deviceID, FfiOpenvrProperty prop);
 extern "C" void RegisterButton(void* instancePtr, unsigned long long buttonID);
 
+struct MacosEncoderSettings {
+    bool prioritize_speed;
+    bool realtime;
+    bool enable_low_latency_rate_control;
+    bool allow_frame_reordering;
+    bool verbose_logging;
+};
+
 extern "C" bool alvr_start_macos_encoder(
     const char* host_ptr,
     unsigned int width,
     unsigned int height,
     unsigned char codec,
-    bool realtime,
+    MacosEncoderSettings settings,
     void (*video_send_callback)(unsigned long long timestamp_ns, unsigned char* buffer_ptr, int len, bool is_idr)
 );
 extern "C" void alvr_update_macos_encoder_params(unsigned long long bitrate_bps, float framerate);

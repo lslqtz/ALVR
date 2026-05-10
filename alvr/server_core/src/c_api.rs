@@ -508,13 +508,22 @@ pub unsafe extern "C" fn alvr_duration_until_next_vsync(out_ns: *mut u64) -> boo
 static MACOS_ENCODER_CLIENT: LazyLock<Mutex<Option<MacosEncoderClient>>> =
     LazyLock::new(|| Mutex::new(None));
 
+#[repr(C)]
+pub struct MacosEncoderSettings {
+    pub prioritize_speed: bool,
+    pub realtime: bool,
+    pub enable_low_latency_rate_control: bool,
+    pub allow_frame_reordering: bool,
+    pub verbose_logging: bool,
+}
+
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn alvr_start_macos_encoder(
     host_ptr: *const c_char,
     width: u32,
     height: u32,
     codec: u8,
-    realtime: bool,
+    settings: MacosEncoderSettings,
     video_send_callback: extern "C" fn(timestamp_ns: u64, buffer_ptr: *mut u8, len: i32, is_idr: bool),
 ) -> bool {
     let host = unsafe { CStr::from_ptr(host_ptr) }.to_string_lossy();
@@ -528,8 +537,20 @@ pub unsafe extern "C" fn alvr_start_macos_encoder(
     
     let wrapper = CallbackWrapper { cb: video_send_callback };
 
+    let internal_settings = crate::macos_encoder::MacosEncoderSettings {
+        prioritize_speed: settings.prioritize_speed,
+        realtime: settings.realtime,
+        enable_low_latency_rate_control: settings.enable_low_latency_rate_control,
+        allow_frame_reordering: settings.allow_frame_reordering,
+        verbose_logging: settings.verbose_logging,
+    };
+
+    if settings.verbose_logging {
+        log::info!("macOS Encoder FFI: Starting connect_and_start to {} ({}x{})", host, width, height);
+    }
+    
     match MacosEncoderClient::connect_and_start(
-        &host, width, height, codec, realtime,
+        &host, width, height, codec, internal_settings,
         move |timestamp_ns, is_idr, data| {
             // Need to cast the data to a mutable pointer just for the C API, 
             // ALVR's send_video promises not to mutate it in practice (it just copies it).
@@ -537,11 +558,14 @@ pub unsafe extern "C" fn alvr_start_macos_encoder(
         }
     ) {
         Ok(client) => {
+            if settings.verbose_logging {
+                log::info!("macOS Encoder FFI: Connection successful!");
+            }
             *MACOS_ENCODER_CLIENT.lock() = Some(client);
             true
         }
         Err(e) => {
-            log::error!("Failed to start macOS encoder: {}", e);
+            log::error!("macOS Encoder FFI: Failed to connect to {}: {}", host, e);
             false
         }
     }

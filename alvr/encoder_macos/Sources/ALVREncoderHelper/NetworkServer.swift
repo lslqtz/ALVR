@@ -172,10 +172,18 @@ final class NetworkServer {
         print("[Server] Init request: \(msg.width)x\(msg.height), codec: \(msg.codec), bitrate: \(msg.bitrateBps)")
 
         do {
-            encoder = try VideoToolboxEncoder(
-                width: Int(msg.width), height: Int(msg.height),
-                codec: msg.codec, bitrateBps: msg.bitrateBps, framerate: msg.framerate
-            )
+            var config = EncoderConfig()
+            config.width = Int(msg.width)
+            config.height = Int(msg.height)
+            config.codec = msg.codec
+            config.bitrateBps = msg.bitrateBps
+            config.framerate = msg.framerate
+            config.prioritizeQualityOverSpeed = !msg.prioritizeSpeed
+            config.realtime = msg.realtime
+            config.enableLowLatencyRateControl = msg.enableLowLatencyRateControl
+            config.allowFrameReordering = msg.allowFrameReordering
+
+            encoder = try VideoToolboxEncoder(config: config)
 
             // 设置编码回调
             encoder?.onEncodedPacket = { [weak self] timestampNs, isIDR, nalData in

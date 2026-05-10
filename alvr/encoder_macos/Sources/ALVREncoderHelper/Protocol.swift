@@ -34,8 +34,14 @@ struct InitMessage {
     let codec: CodecType
     let bitrateBps: UInt64
     let framerate: UInt32
+    
+    // New settings
+    let prioritizeSpeed: Bool
+    let realtime: Bool
+    let enableLowLatencyRateControl: Bool
+    let allowFrameReordering: Bool
 
-    static let bodySize = 4 + 4 + 1 + 8 + 4  // 21 bytes
+    static let bodySize = 4 + 4 + 1 + 8 + 4 + 4 // 25 bytes
 
     static func decode(from data: Data) -> InitMessage? {
         guard data.count >= bodySize else { return nil }
@@ -47,10 +53,19 @@ struct InitMessage {
         let codec = CodecType(rawValue: codecRaw) ?? .h264
         let bitrate = data.readUInt64(at: &offset)
         let framerate = data.readUInt32(at: &offset)
+        
+        let prioritizeSpeed = data[offset] != 0; offset += 1
+        let realtime = data[offset] != 0; offset += 1
+        let enableLowLatencyRateControl = data[offset] != 0; offset += 1
+        let allowFrameReordering = data[offset] != 0; offset += 1
 
         return InitMessage(
-            width: width, height: height,
-            codec: codec, bitrateBps: bitrate, framerate: framerate
+            width: width, height: height, codec: codec, 
+            bitrateBps: bitrate, framerate: framerate,
+            prioritizeSpeed: prioritizeSpeed,
+            realtime: realtime,
+            enableLowLatencyRateControl: enableLowLatencyRateControl,
+            allowFrameReordering: allowFrameReordering
         )
     }
 }

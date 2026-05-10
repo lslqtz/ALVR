@@ -304,12 +304,29 @@ CABAC produces better compression but it's significantly slower and may lead to 
     pub software: SoftwareEncodingConfig,
 
     #[cfg_attr(not(target_os = "windows"), schema(flag = "hidden"))]
-    #[schema(strings(
-        display_name = "macOS Encoder IP",
-        help = "Optional IP address (e.g. 192.168.1.100:9945) of a macOS remote encoder helper. If set, ALVR will offload encoding to the macOS machine via TCP."
-    ))]
-    #[schema(flag = "steamvr-restart")]
-    pub macos_encoder_ip: Option<String>,
+    #[schema(strings(display_name = "macOS Remote Encoder"))]
+    pub macos_encoder: Switch<MacosEncoderConfig>,
+}
+
+#[derive(SettingsSchema, Serialize, Deserialize, Clone, Debug, PartialEq)]
+pub struct MacosEncoderConfig {
+    #[schema(strings(help = "IP address and port of the macOS encoder helper (e.g. 192.168.1.100:9945)"))]
+    pub host: String,
+
+    #[schema(strings(help = "Prioritize encoding speed over quality for lower latency. Recommended: ON"))]
+    pub prioritize_speed: bool,
+
+    #[schema(strings(help = "Use VideoToolbox's real-time mode. Recommended: ON"))]
+    pub realtime: bool,
+
+    #[schema(strings(help = "Enable macOS 11.3+ low latency rate control (avoids bitrate spikes). Recommended: ON"))]
+    pub enable_low_latency_rate_control: bool,
+
+    #[schema(strings(help = "Allow B-frames (increases quality but adds 1-2 frames of latency). Recommended: OFF"))]
+    pub allow_frame_reordering: bool,
+    
+    #[schema(strings(help = "Show detailed debug logs for macOS encoder in ALVR console. Recommended: OFF"))]
+    pub verbose_logging: bool,
 }
 
 #[derive(SettingsSchema, Serialize, Deserialize, Clone, Debug, PartialEq)]
@@ -1813,9 +1830,15 @@ pub fn session_settings_default() -> SettingsDefault {
                     force_software_encoding: false,
                     thread_count: 0,
                 },
-                macos_encoder_ip: OptionalDefault {
-                    set: false,
-                    content: "".into(),
+                macos_encoder: Switch {
+                    enabled: false,
+                    content: MacosEncoderConfig {
+                        host: "".into(),
+                        prioritize_speed: true,
+                        realtime: true,
+                        enable_low_latency_rate_control: true,
+                        allow_frame_reordering: false,
+                    },
                 },
             },
             mediacodec_extra_options: {

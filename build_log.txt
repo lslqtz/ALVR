@@ -1,0 +1,536 @@
+Build ARM64 Encoder	Set up job	﻿2026-01-25T15:28:37.2005614Z Current runner version: '2.331.0'
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2220394Z ##[group]Runner Image Provisioner
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2221588Z Hosted Compute Agent
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2222418Z Version: 20260115.477
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2223351Z Commit: 4b342d620503cbe250a3154040964899ea7c9b00
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2225014Z Build Date: 2026-01-15T22:32:41Z
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2226239Z Worker ID: {077d6e80-04c7-46cb-8c27-8ac7caf6a29d}
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2227113Z Azure Region: centralus
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2227719Z ##[endgroup]
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2229462Z ##[group]Operating System
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2230033Z Microsoft Windows Server 2025
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2230575Z 10.0.26100
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2230988Z Datacenter
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2231476Z ##[endgroup]
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2231903Z ##[group]Runner Image
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2232431Z Image: windows-2025
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2232944Z Version: 20260119.4.1
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2233873Z Included Software: https://github.com/actions/runner-images/blob/win25/20260119.4/images/windows/Windows2025-Readme.md
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2235662Z Image Release: https://github.com/actions/runner-images/releases/tag/win25%2F20260119.4
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2236511Z ##[endgroup]
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2239024Z ##[group]GITHUB_TOKEN Permissions
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2240892Z Actions: write
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2241383Z ArtifactMetadata: write
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2241926Z Attestations: write
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2242396Z Checks: write
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2242786Z Contents: write
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2243282Z Deployments: write
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2244001Z Discussions: write
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2244491Z Issues: write
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2244929Z Metadata: read
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2245544Z Models: read
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2246018Z Packages: write
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2246473Z Pages: write
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2247009Z PullRequests: write
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2247457Z RepositoryProjects: write
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2247993Z SecurityEvents: write
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2248437Z Statuses: write
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2248898Z ##[endgroup]
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2250833Z Secret source: Actions
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.2251526Z Prepare workflow directory
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.3299606Z Prepare all required actions
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.3337954Z Getting action download info
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.6822256Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:37.8957099Z Download action repository 'dtolnay/rust-toolchain@stable' (SHA:4be9e76fd7c4901c61fb841f559994984270fce7)
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:38.2986664Z Download action repository 'Swatinem/rust-cache@v2' (SHA:779680da715d629ac1d338a641029a2f4372abb5)
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:38.9721683Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+Build ARM64 Encoder	Set up job	2026-01-25T15:28:39.8786625Z Complete job name: Build ARM64 Encoder
+Build ARM64 Encoder	Checkout	﻿2026-01-25T15:28:40.5110710Z ##[group]Run actions/checkout@v4
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:40.5111563Z with:
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:40.5111830Z   submodules: true
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:40.5112142Z   repository: lslqtz/ALVR
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:40.5112681Z   token: ***
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:40.5112927Z   ssh-strict: true
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:40.5113190Z   ssh-user: git
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:40.5113454Z   persist-credentials: true
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:40.5113963Z   clean: true
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:40.5114300Z   sparse-checkout-cone-mode: true
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:40.5114615Z   fetch-depth: 1
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:40.5114869Z   fetch-tags: false
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:40.5115140Z   show-progress: true
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:40.5115406Z   lfs: false
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:40.5115652Z   set-safe-directory: true
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:40.5116384Z env:
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:40.5116656Z   CARGO_TERM_COLOR: always
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:40.5117347Z   FFMPEG_ARM64_URL: https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-winarm64-gpl-shared-7.1.zip
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:40.5118032Z ##[endgroup]
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:40.7154245Z Syncing repository: lslqtz/ALVR
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:40.7155671Z ##[group]Getting Git version info
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:40.7217651Z Working directory is 'D:\a\ALVR\ALVR'
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:40.8990430Z [command]"C:\Program Files\Git\bin\git.exe" version
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:41.9349750Z git version 2.52.0.windows.1
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:41.9408345Z ##[endgroup]
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:41.9444173Z Temporarily overriding HOME='D:\a\_temp\de222869-7e70-45f3-a175-e5e5f9dfffde' before making global git config changes
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:41.9445398Z Adding repository directory to the temporary git global config as a safe directory
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:41.9446209Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\ALVR\ALVR
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:42.0611512Z Deleting the contents of 'D:\a\ALVR\ALVR'
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:42.0619055Z ##[group]Initializing the repository
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:42.0629930Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\ALVR\ALVR
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:42.2604293Z Initialized empty Git repository in D:/a/ALVR/ALVR/.git/
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:42.2660155Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/lslqtz/ALVR
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:42.3673581Z ##[endgroup]
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:42.3674340Z ##[group]Disabling automatic garbage collection
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:42.3675103Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:42.3999746Z ##[endgroup]
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:42.4000700Z ##[group]Setting up auth
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:42.4018037Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:42.4411001Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:45.6188090Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:45.6523218Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:46.1919392Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:46.2240898Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:46.7743740Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:46.8078935Z ##[endgroup]
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:46.8080129Z ##[group]Fetching the repository
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:46.8095269Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +cea54c52f612041f92b6b05c73af3be48bef87ec:refs/remotes/origin/fix/encoding-errors
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:49.0363510Z From https://github.com/lslqtz/ALVR
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:49.0365321Z  * [new ref]         cea54c52f612041f92b6b05c73af3be48bef87ec -> origin/fix/encoding-errors
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:49.0832517Z ##[endgroup]
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:49.0833284Z ##[group]Determining the checkout info
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:49.0836153Z ##[endgroup]
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:49.0850446Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:49.1523732Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:49.1813194Z ##[group]Checking out the ref
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:49.1824403Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B fix/encoding-errors refs/remotes/origin/fix/encoding-errors
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:49.4465790Z branch 'fix/encoding-errors' set up to track 'origin/fix/encoding-errors'.
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:49.4473165Z Switched to a new branch 'fix/encoding-errors'
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:49.4519138Z ##[endgroup]
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:49.4520037Z ##[group]Setting up auth for fetching submodules
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:49.4536627Z [command]"C:\Program Files\Git\bin\git.exe" config --global http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:49.4864123Z [command]"C:\Program Files\Git\bin\git.exe" config --global --unset-all url.https://github.com/.insteadOf
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:49.5179897Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add url.https://github.com/.insteadOf git@github.com:
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:49.5483957Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add url.https://github.com/.insteadOf org-18650291@github.com:
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:49.5779000Z ##[endgroup]
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:49.5779469Z ##[group]Fetching submodules
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:49.5789022Z [command]"C:\Program Files\Git\bin\git.exe" submodule sync
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:50.1167801Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 submodule update --init --force --depth=1
+Build ARM64 Encoder	Checkout	2026-01-25T15:28:50.6543897Z Submodule 'openvr' (https://github.com/ValveSoftware/openvr.git) registered for path 'openvr'
+Build ARM64 Encoder	Checkout	2026-01-25T15:29:07.2467140Z Cloning into 'D:/a/ALVR/ALVR/openvr'...
+Build ARM64 Encoder	Checkout	2026-01-25T15:29:13.5269958Z From https://github.com/ValveSoftware/openvr
+Build ARM64 Encoder	Checkout	2026-01-25T15:29:13.5270484Z  * branch            4c85abcb7f7f1f02adaf3812018c99fc593bc341 -> FETCH_HEAD
+Build ARM64 Encoder	Checkout	2026-01-25T15:29:16.4255913Z Submodule path 'openvr': checked out '4c85abcb7f7f1f02adaf3812018c99fc593bc341'
+Build ARM64 Encoder	Checkout	2026-01-25T15:29:16.4352450Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach "git config --local gc.auto 0"
+Build ARM64 Encoder	Checkout	2026-01-25T15:29:16.9647451Z Entering 'openvr'
+Build ARM64 Encoder	Checkout	2026-01-25T15:29:17.0107973Z ##[endgroup]
+Build ARM64 Encoder	Checkout	2026-01-25T15:29:17.0108773Z ##[group]Persisting credentials for submodules
+Build ARM64 Encoder	Checkout	2026-01-25T15:29:17.0120677Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'url\.https\:\/\/github\.com\/\.insteadOf' && git config --local --unset-all 'url.https://github.com/.insteadOf' || :\""
+Build ARM64 Encoder	Checkout	2026-01-25T15:29:17.5403795Z Entering 'openvr'
+Build ARM64 Encoder	Checkout	2026-01-25T15:29:17.6312572Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach "sh -c \"git config --local 'http.https://github.com/.extraheader' 'AUTHORIZATION: basic ***' && git config --local --show-origin --name-only --get-regexp remote.origin.url\""
+Build ARM64 Encoder	Checkout	2026-01-25T15:29:18.1866567Z Entering 'openvr'
+Build ARM64 Encoder	Checkout	2026-01-25T15:29:18.2662819Z file:D:/a/ALVR/ALVR/.git/modules/openvr/config	remote.origin.url
+Build ARM64 Encoder	Checkout	2026-01-25T15:29:18.2816254Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach "git config --local --add 'url.https://github.com/.insteadOf' 'git@github.com:'"
+Build ARM64 Encoder	Checkout	2026-01-25T15:29:18.8057061Z Entering 'openvr'
+Build ARM64 Encoder	Checkout	2026-01-25T15:29:18.8525590Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach "git config --local --add 'url.https://github.com/.insteadOf' 'org-18650291@github.com:'"
+Build ARM64 Encoder	Checkout	2026-01-25T15:29:19.3815129Z Entering 'openvr'
+Build ARM64 Encoder	Checkout	2026-01-25T15:29:19.4265569Z ##[endgroup]
+Build ARM64 Encoder	Checkout	2026-01-25T15:29:19.4873902Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+Build ARM64 Encoder	Checkout	2026-01-25T15:29:19.5152642Z cea54c52f612041f92b6b05c73af3be48bef87ec
+Build ARM64 Encoder	Setup Rust	﻿2026-01-25T15:29:19.5649732Z ##[group]Run dtolnay/rust-toolchain@stable
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5650211Z with:
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5650446Z   targets: aarch64-pc-windows-msvc
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5730198Z   toolchain: stable
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5730462Z env:
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5730619Z   CARGO_TERM_COLOR: always
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5731221Z   FFMPEG_ARM64_URL: https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-winarm64-gpl-shared-7.1.zip
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5731780Z ##[endgroup]
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5974216Z ##[group]Run : parse toolchain version
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5974566Z [36;1m: parse toolchain version[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5975200Z [36;1mif [[ -z $toolchain ]]; then[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5976147Z [36;1m  # GitHub does not enforce `required: true` inputs itself. https://github.com/actions/runner/issues/1070[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5976693Z [36;1m  echo "'toolchain' is a required input" >&2[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5977206Z [36;1m  exit 1[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5977495Z [36;1melif [[ $toolchain =~ ^stable' '[0-9]+' '(year|month|week|day)s?' 'ago$ ]]; then[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5977917Z [36;1m  if [[ Windows == macOS ]]; then[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5978413Z [36;1m    echo "toolchain=1.$((($(date -v-$(sed 's/stable \([0-9]*\) \(.\).*/\1\2/' <<< $toolchain) +%s)/60/60/24-16569)/7/6))" >> $GITHUB_OUTPUT[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5978896Z [36;1m  else[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5979268Z [36;1m    echo "toolchain=1.$((($(date --date "${toolchain#stable }" +%s)/60/60/24-16569)/7/6))" >> $GITHUB_OUTPUT[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5979713Z [36;1m  fi[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5979972Z [36;1melif [[ $toolchain =~ ^stable' 'minus' '[0-9]+' 'releases?$ ]]; then[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5980482Z [36;1m  echo "toolchain=1.$((($(date +%s)/60/60/24-16569)/7/6-${toolchain//[^0-9]/}))" >> $GITHUB_OUTPUT[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5980921Z [36;1melif [[ $toolchain =~ ^1\.[0-9]+$ ]]; then[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5981415Z [36;1m  echo "toolchain=1.$((i=${toolchain#1.}, c=($(date +%s)/60/60/24-16569)/7/6, i+9*i*(10*i<=c)+90*i*(100*i<=c)))" >> $GITHUB_OUTPUT[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5981899Z [36;1melse[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5982101Z [36;1m  echo "toolchain=$toolchain" >> $GITHUB_OUTPUT[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.5982365Z [36;1mfi[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.6001872Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.6002270Z env:
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.6002432Z   CARGO_TERM_COLOR: always
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.6002976Z   FFMPEG_ARM64_URL: https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-winarm64-gpl-shared-7.1.zip
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.6003534Z   toolchain: stable
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.6003704Z ##[endgroup]
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.9954820Z ##[group]Run : construct rustup command line
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.9955131Z [36;1m: construct rustup command line[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.9955553Z [36;1mecho "targets=$(for t in ${targets//,/ }; do echo -n ' --target' $t; done)" >> $GITHUB_OUTPUT[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.9956193Z [36;1mecho "components=$(for c in ${components//,/ }; do echo -n ' --component' $c; done)" >> $GITHUB_OUTPUT[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.9956660Z [36;1mecho "downgrade=" >> $GITHUB_OUTPUT[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.9972074Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.9972445Z env:
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.9972595Z   CARGO_TERM_COLOR: always
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.9973118Z   FFMPEG_ARM64_URL: https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-winarm64-gpl-shared-7.1.zip
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.9973691Z   targets: aarch64-pc-windows-msvc
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.9973901Z   components: 
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:19.9974055Z ##[endgroup]
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.0800217Z ##[group]Run : set $CARGO_HOME
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.0800506Z [36;1m: set $CARGO_HOME[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.0800865Z [36;1mecho CARGO_HOME=${CARGO_HOME:-"$USERPROFILE\.cargo"} >> $GITHUB_ENV[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.0816980Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.0819181Z env:
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.0819346Z   CARGO_TERM_COLOR: always
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.0819878Z   FFMPEG_ARM64_URL: https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-winarm64-gpl-shared-7.1.zip
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.0820431Z ##[endgroup]
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.1347415Z ##[group]Run : install rustup if needed on windows
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.1347758Z [36;1m: install rustup if needed on windows[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.1348046Z [36;1mif ! command -v rustup &>/dev/null; then[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.1348763Z [36;1m  curl --proto '=https' --tlsv1.2 --retry 10 --retry-connrefused --location --silent --show-error --fail https://win.rustup.rs/x86_64 --output 'D:\a\_temp\rustup-init.exe'[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.1349588Z [36;1m  'D:\a\_temp\rustup-init.exe' --default-toolchain none --no-modify-path -y[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.1349973Z [36;1m  echo "$CARGO_HOME\bin" >> $GITHUB_PATH[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.1350374Z [36;1mfi[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.1365975Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.1366365Z env:
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.1366862Z   CARGO_TERM_COLOR: always
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.1367393Z   FFMPEG_ARM64_URL: https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-winarm64-gpl-shared-7.1.zip
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.1367971Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.1368188Z ##[endgroup]
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.2195657Z ##[group]Run rustup toolchain install stable --target aarch64-pc-windows-msvc --profile minimal --no-self-update
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.2196416Z [36;1mrustup toolchain install stable --target aarch64-pc-windows-msvc --profile minimal --no-self-update[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.2212253Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.2212617Z env:
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.2212766Z   CARGO_TERM_COLOR: always
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.2213331Z   FFMPEG_ARM64_URL: https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-winarm64-gpl-shared-7.1.zip
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.2213938Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.2214175Z   RUSTUP_PERMIT_COPY_RENAME: 1
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:20.2214375Z ##[endgroup]
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:31.0136994Z info: syncing channel updates for 'stable-x86_64-pc-windows-msvc'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:32.1895377Z info: latest update on 2026-01-22, rust version 1.93.0 (254b59607 2026-01-19)
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:32.2540830Z info: downloading component 'rust-std' for 'aarch64-pc-windows-msvc'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:33.0032832Z info: downloading component 'clippy'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:33.2112323Z info: downloading component 'rustfmt'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:33.3826748Z info: downloading component 'rust-std' for 'x86_64-pc-windows-gnu'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:34.0394962Z info: downloading component 'rust-std' for 'i686-pc-windows-msvc'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:34.5381015Z info: downloading component 'cargo'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:34.8436939Z info: downloading component 'rust-std'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:35.4271696Z info: downloading component 'rustc'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:36.9465979Z info: removing previous version of component 'clippy'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:37.0171478Z info: removing previous version of component 'rustfmt'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:37.0624695Z info: removing previous version of component 'rust-std' for 'x86_64-pc-windows-gnu'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:37.2725182Z info: removing previous version of component 'rust-std' for 'i686-pc-windows-msvc'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:37.3428848Z info: removing previous version of component 'cargo'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:37.5377033Z info: removing previous version of component 'rust-std'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:37.6488377Z info: removing previous version of component 'rustc'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:37.8964499Z info: installing component 'rust-std' for 'aarch64-pc-windows-msvc'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:39.3646710Z info: installing component 'clippy'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:40.3276394Z info: installing component 'rustfmt'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:40.6050417Z info: installing component 'rust-std' for 'x86_64-pc-windows-gnu'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:42.9306445Z info: installing component 'rust-std' for 'i686-pc-windows-msvc'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:44.4364000Z info: installing component 'cargo'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:45.5821228Z info: installing component 'rust-std'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:47.0743698Z info: installing component 'rustc'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.0545698Z 
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.0841765Z   stable-x86_64-pc-windows-msvc updated - rustc 1.93.0 (254b59607 2026-01-19) (from rustc 1.92.0 (ded5c06cf 2025-12-08))
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.0843073Z 
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.1064360Z ##[group]Run rustup default stable
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.1064610Z [36;1mrustup default stable[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.1079689Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.1080060Z env:
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.1080203Z   CARGO_TERM_COLOR: always
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.1080738Z   FFMPEG_ARM64_URL: https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-winarm64-gpl-shared-7.1.zip
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.1082109Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.1082339Z ##[endgroup]
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.1789690Z info: using existing install for 'stable-x86_64-pc-windows-msvc'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.2165683Z info: default toolchain set to 'stable-x86_64-pc-windows-msvc'
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.2166025Z 
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.2372849Z   stable-x86_64-pc-windows-msvc unchanged - rustc 1.93.0 (254b59607 2026-01-19)
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.2373316Z 
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.2582871Z ##[group]Run : create cachekey
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.2583139Z [36;1m: create cachekey[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.2583648Z [36;1mDATE=$(rustc +stable --version --verbose | sed -ne 's/^commit-date: \(20[0-9][0-9]\)-\([01][0-9]\)-\([0-3][0-9]\)$/\1\2\3/p')[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.2584268Z [36;1mHASH=$(rustc +stable --version --verbose | sed -ne 's/^commit-hash: //p')[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.2584729Z [36;1mecho "cachekey=$(echo $DATE$HASH | head -c12)" >> $GITHUB_OUTPUT[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.2600491Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.2600887Z env:
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.2601044Z   CARGO_TERM_COLOR: always
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.2601594Z   FFMPEG_ARM64_URL: https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-winarm64-gpl-shared-7.1.zip
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.2602181Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:53.2602412Z ##[endgroup]
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.3508716Z ##[group]Run : disable incremental compilation
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.3509279Z [36;1m: disable incremental compilation[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.3509774Z [36;1mif [ -z "${CARGO_INCREMENTAL+set}" ]; then[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.3510332Z [36;1m  echo CARGO_INCREMENTAL=0 >> $GITHUB_ENV[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.3510777Z [36;1mfi[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.3526988Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.3527358Z env:
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.3527509Z   CARGO_TERM_COLOR: always
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.3528070Z   FFMPEG_ARM64_URL: https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-winarm64-gpl-shared-7.1.zip
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.3528657Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.3528892Z ##[endgroup]
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4040966Z ##[group]Run : enable colors in Cargo output
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4041276Z [36;1m: enable colors in Cargo output[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4041552Z [36;1mif [ -z "${CARGO_TERM_COLOR+set}" ]; then[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4041848Z [36;1m  echo CARGO_TERM_COLOR=always >> $GITHUB_ENV[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4042086Z [36;1mfi[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4057172Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4057528Z env:
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4057679Z   CARGO_TERM_COLOR: always
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4058213Z   FFMPEG_ARM64_URL: https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-winarm64-gpl-shared-7.1.zip
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4058808Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4059209Z   CARGO_INCREMENTAL: 0
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4059381Z ##[endgroup]
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4571419Z ##[group]Run : enable Cargo sparse registry
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4571727Z [36;1m: enable Cargo sparse registry[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4572041Z [36;1m# implemented in 1.66, stabilized in 1.68, made default in 1.70[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4572647Z [36;1mif [ -z "${CARGO_REGISTRIES_CRATES_IO_PROTOCOL+set}" -o -f "D:\a\_temp"/.implicit_cargo_registries_crates_io_protocol ]; then[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4573261Z [36;1m  if rustc +stable --version --verbose | grep -q '^release: 1\.6[89]\.'; then[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4573747Z [36;1m    touch "D:\a\_temp"/.implicit_cargo_registries_crates_io_protocol || true[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4574187Z [36;1m    echo CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse >> $GITHUB_ENV[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4574639Z [36;1m  elif rustc +stable --version --verbose | grep -q '^release: 1\.6[67]\.'; then[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4575277Z [36;1m    touch "D:\a\_temp"/.implicit_cargo_registries_crates_io_protocol || true[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4575704Z [36;1m    echo CARGO_REGISTRIES_CRATES_IO_PROTOCOL=git >> $GITHUB_ENV[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4575995Z [36;1m  fi[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4576131Z [36;1mfi[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4590872Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4591239Z env:
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4591381Z   CARGO_TERM_COLOR: always
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4591911Z   FFMPEG_ARM64_URL: https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-winarm64-gpl-shared-7.1.zip
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4592480Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4592707Z   CARGO_INCREMENTAL: 0
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.4592871Z ##[endgroup]
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.7292410Z ##[group]Run : work around spurious network errors in curl 8.0
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.7292832Z [36;1m: work around spurious network errors in curl 8.0[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.7293352Z [36;1m# https://rust-lang.zulipchat.com/#narrow/stream/246057-t-cargo/topic/timeout.20investigation[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.7293959Z [36;1mif rustc +stable --version --verbose | grep -q '^release: 1\.7[01]\.'; then[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.7294384Z [36;1m  echo CARGO_HTTP_MULTIPLEXING=false >> $GITHUB_ENV[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.7294659Z [36;1mfi[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.7309946Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.7310320Z env:
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.7310475Z   CARGO_TERM_COLOR: always
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.7311011Z   FFMPEG_ARM64_URL: https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-winarm64-gpl-shared-7.1.zip
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.7311601Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.7311841Z   CARGO_INCREMENTAL: 0
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.7312012Z ##[endgroup]
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.8565352Z ##[group]Run rustc +stable --version --verbose
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.8565927Z [36;1mrustc +stable --version --verbose[0m
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.8591290Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.8591948Z env:
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.8592206Z   CARGO_TERM_COLOR: always
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.8593216Z   FFMPEG_ARM64_URL: https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-winarm64-gpl-shared-7.1.zip
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.8594305Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.8594736Z   CARGO_INCREMENTAL: 0
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.8595031Z ##[endgroup]
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.9463649Z rustc 1.93.0 (254b59607 2026-01-19)
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.9464163Z binary: rustc
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.9464544Z commit-hash: 254b59607d4417e9dffbc307138ae5c86280fe4c
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.9465003Z commit-date: 2026-01-19
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.9465315Z host: x86_64-pc-windows-msvc
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.9465892Z release: 1.93.0
+Build ARM64 Encoder	Setup Rust	2026-01-25T15:29:55.9466442Z LLVM version: 21.1.8
+Build ARM64 Encoder	Cache Cargo	﻿2026-01-25T15:29:55.9776460Z ##[group]Run Swatinem/rust-cache@v2
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:55.9776783Z with:
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:55.9776935Z   key: arm64-encoder
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:55.9777115Z   prefix-key: v0-rust
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:55.9777290Z   add-job-id-key: true
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:55.9777483Z   add-rust-environment-hash-key: true
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:55.9777712Z   cache-targets: true
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:55.9777880Z   cache-all-crates: false
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:55.9778074Z   cache-workspace-crates: false
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:55.9778263Z   save-if: true
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:55.9778420Z   cache-provider: github
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:55.9778592Z   cache-bin: true
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:55.9778747Z   lookup-only: false
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:55.9778897Z env:
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:55.9779034Z   CARGO_TERM_COLOR: always
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:55.9779549Z   FFMPEG_ARM64_URL: https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-winarm64-gpl-shared-7.1.zip
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:55.9780117Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:55.9780534Z   CARGO_INCREMENTAL: 0
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:55.9780731Z ##[endgroup]
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7461807Z ##[group]Cache Configuration
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7462556Z Cache Provider:
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7462960Z     github
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7463328Z Workspaces:
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7463786Z     D:\a\ALVR\ALVR
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7464184Z Cache Paths:
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7464588Z     C:\Users\runneradmin\.cargo\bin
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7465129Z     C:\Users\runneradmin\.cargo\.crates.toml
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7465706Z     C:\Users\runneradmin\.cargo\.crates2.json
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7466645Z     C:\Users\runneradmin\.cargo\registry
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7467247Z     C:\Users\runneradmin\.cargo\git
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7467787Z     D:\a\ALVR\ALVR\target
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7468242Z Restore Key:
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7468872Z     v0-rust-arm64-encoder-build-arm64-encoder-Windows_NT-x64-02f6e914
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7469639Z Cache Key:
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7470250Z     v0-rust-arm64-encoder-build-arm64-encoder-Windows_NT-x64-02f6e914-c247c304
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7471177Z .. Prefix:
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7471737Z   - v0-rust-arm64-encoder-build-arm64-encoder-Windows_NT-x64
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7472409Z .. Environment considered:
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7473980Z   - Rust Version: 1.93.0 x86_64-pc-windows-msvc (254b59607d4417e9dffbc307138ae5c86280fe4c)
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7474707Z   - CARGO_HOME
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7474984Z   - CARGO_INCREMENTAL
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7475269Z   - CARGO_TERM_COLOR
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7475568Z .. Lockfiles considered:
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7475900Z   - D:\a\ALVR\ALVR\.cargo\config.toml
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7476592Z   - D:\a\ALVR\ALVR\alvr\adb\Cargo.toml
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7476996Z   - D:\a\ALVR\ALVR\alvr\audio\Cargo.toml
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7477414Z   - D:\a\ALVR\ALVR\alvr\client_core\Cargo.toml
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7478117Z   - D:\a\ALVR\ALVR\alvr\client_mock\Cargo.toml
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7478579Z   - D:\a\ALVR\ALVR\alvr\client_openxr\Cargo.toml
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7479051Z   - D:\a\ALVR\ALVR\alvr\common\Cargo.toml
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7479504Z   - D:\a\ALVR\ALVR\alvr\dashboard\Cargo.toml
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7479958Z   - D:\a\ALVR\ALVR\alvr\encoder_arm64\Cargo.toml
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7480406Z   - D:\a\ALVR\ALVR\alvr\events\Cargo.toml
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7480829Z   - D:\a\ALVR\ALVR\alvr\filesystem\Cargo.toml
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7481267Z   - D:\a\ALVR\ALVR\alvr\graphics\Cargo.toml
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7481691Z   - D:\a\ALVR\ALVR\alvr\gui_common\Cargo.toml
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7482121Z   - D:\a\ALVR\ALVR\alvr\launcher\Cargo.toml
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7482545Z   - D:\a\ALVR\ALVR\alvr\packets\Cargo.toml
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7483000Z   - D:\a\ALVR\ALVR\alvr\server_core\Cargo.toml
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7483426Z   - D:\a\ALVR\ALVR\alvr\server_io\Cargo.toml
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7483870Z   - D:\a\ALVR\ALVR\alvr\server_openvr\Cargo.toml
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7484326Z   - D:\a\ALVR\ALVR\alvr\session\Cargo.toml
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7484757Z   - D:\a\ALVR\ALVR\alvr\sockets\Cargo.toml
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7490046Z   - D:\a\ALVR\ALVR\alvr\system_info\Cargo.toml
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7492386Z   - D:\a\ALVR\ALVR\alvr\vrcompositor_wrapper\Cargo.toml
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7494846Z   - D:\a\ALVR\ALVR\alvr\vulkan_layer\Cargo.toml
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7495386Z   - D:\a\ALVR\ALVR\alvr\xtask\Cargo.toml
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7497287Z   - D:\a\ALVR\ALVR\Cargo.lock
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7497965Z ##[endgroup]
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7498138Z 
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:58.7498256Z ... Restoring cache ...
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:29:59.1472408Z Cache hit for: v0-rust-arm64-encoder-build-arm64-encoder-Windows_NT-x64-02f6e914-c247c304
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:30:00.3154627Z Received 117440512 of 247015660 (47.5%), 110.5 MBs/sec
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:30:01.3213921Z Received 242821356 of 247015660 (98.3%), 114.7 MBs/sec
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:30:01.8454153Z Received 247015660 of 247015660 (100.0%), 92.6 MBs/sec
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:30:01.8457466Z Cache Size: ~236 MB (247015660 B)
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:30:01.8618679Z [command]"C:\Program Files\Git\usr\bin\tar.exe" -xf D:/a/_temp/e6da6f32-4b1b-4144-bf25-1d85defa6f0a/cache.tzst -P -C D:/a/ALVR/ALVR --force-local --use-compress-program "zstd -d"
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:30:25.7106952Z Cache restored successfully
+Build ARM64 Encoder	Cache Cargo	2026-01-25T15:30:25.7255624Z Restored from cache key "v0-rust-arm64-encoder-build-arm64-encoder-Windows_NT-x64-02f6e914-c247c304" full match: true.
+Build ARM64 Encoder	Install LLVM	﻿2026-01-25T15:30:25.7531117Z ##[group]Run choco install llvm -y
+Build ARM64 Encoder	Install LLVM	2026-01-25T15:30:25.7531655Z [36;1mchoco install llvm -y[0m
+Build ARM64 Encoder	Install LLVM	2026-01-25T15:30:25.7532163Z [36;1mecho "C:\Program Files\LLVM\bin" >> $env:GITHUB_PATH[0m
+Build ARM64 Encoder	Install LLVM	2026-01-25T15:30:25.8190277Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+Build ARM64 Encoder	Install LLVM	2026-01-25T15:30:25.8190678Z env:
+Build ARM64 Encoder	Install LLVM	2026-01-25T15:30:25.8190869Z   CARGO_TERM_COLOR: always
+Build ARM64 Encoder	Install LLVM	2026-01-25T15:30:25.8191540Z   FFMPEG_ARM64_URL: https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-winarm64-gpl-shared-7.1.zip
+Build ARM64 Encoder	Install LLVM	2026-01-25T15:30:25.8192273Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+Build ARM64 Encoder	Install LLVM	2026-01-25T15:30:25.8192569Z   CARGO_INCREMENTAL: 0
+Build ARM64 Encoder	Install LLVM	2026-01-25T15:30:25.8192812Z   CACHE_ON_FAILURE: false
+Build ARM64 Encoder	Install LLVM	2026-01-25T15:30:25.8193036Z ##[endgroup]
+Build ARM64 Encoder	Install LLVM	2026-01-25T15:30:34.2253124Z Chocolatey v2.6.0
+Build ARM64 Encoder	Install LLVM	2026-01-25T15:30:34.5990582Z Installing the following packages:
+Build ARM64 Encoder	Install LLVM	2026-01-25T15:30:34.5997687Z llvm
+Build ARM64 Encoder	Install LLVM	2026-01-25T15:30:34.6003274Z By installing, you accept licenses for the packages.
+Build ARM64 Encoder	Install LLVM	2026-01-25T15:30:39.5224159Z llvm v20.1.8 already installed.
+Build ARM64 Encoder	Install LLVM	2026-01-25T15:30:39.5224808Z  Use --force to reinstall, specify a version to install, or try upgrade.
+Build ARM64 Encoder	Install LLVM	2026-01-25T15:30:39.5318708Z 
+Build ARM64 Encoder	Install LLVM	2026-01-25T15:30:39.5318962Z Chocolatey installed 0/1 packages. 
+Build ARM64 Encoder	Install LLVM	2026-01-25T15:30:39.5319381Z  See the log for details (C:\ProgramData\chocolatey\logs\chocolatey.log).
+Build ARM64 Encoder	Install LLVM	2026-01-25T15:30:39.5324829Z 
+Build ARM64 Encoder	Install LLVM	2026-01-25T15:30:39.5329493Z Warnings:
+Build ARM64 Encoder	Install LLVM	2026-01-25T15:30:39.5336719Z  - llvm - llvm v20.1.8 already installed.
+Build ARM64 Encoder	Install LLVM	2026-01-25T15:30:39.5337119Z  Use --force to reinstall, specify a version to install, or try upgrade.
+Build ARM64 Encoder	Download ARM64 FFmpeg	﻿2026-01-25T15:30:40.4328771Z ##[group]Run $ProgressPreference = 'SilentlyContinue'
+Build ARM64 Encoder	Download ARM64 FFmpeg	2026-01-25T15:30:40.4329260Z [36;1m$ProgressPreference = 'SilentlyContinue'[0m
+Build ARM64 Encoder	Download ARM64 FFmpeg	2026-01-25T15:30:40.4330065Z [36;1mInvoke-WebRequest -Uri "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-winarm64-gpl-shared-7.1.zip" -OutFile ffmpeg-arm64.zip[0m
+Build ARM64 Encoder	Download ARM64 FFmpeg	2026-01-25T15:30:40.4330930Z [36;1mExpand-Archive ffmpeg-arm64.zip -DestinationPath deps/windows[0m
+Build ARM64 Encoder	Download ARM64 FFmpeg	2026-01-25T15:30:40.4331528Z [36;1mRename-Item -Path "deps/windows/ffmpeg-n7.1-latest-winarm64-gpl-shared-7.1" -NewName "ffmpeg-arm64"[0m
+Build ARM64 Encoder	Download ARM64 FFmpeg	2026-01-25T15:30:40.4332017Z [36;1m# 设置环境变量[0m
+Build ARM64 Encoder	Download ARM64 FFmpeg	2026-01-25T15:30:40.4332352Z [36;1mecho "FFMPEG_ARM64_DIR=D:\a\ALVR\ALVR/deps/windows/ffmpeg-arm64" >> $env:GITHUB_ENV[0m
+Build ARM64 Encoder	Download ARM64 FFmpeg	2026-01-25T15:30:40.4402012Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+Build ARM64 Encoder	Download ARM64 FFmpeg	2026-01-25T15:30:40.4402341Z env:
+Build ARM64 Encoder	Download ARM64 FFmpeg	2026-01-25T15:30:40.4402501Z   CARGO_TERM_COLOR: always
+Build ARM64 Encoder	Download ARM64 FFmpeg	2026-01-25T15:30:40.4403043Z   FFMPEG_ARM64_URL: https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-winarm64-gpl-shared-7.1.zip
+Build ARM64 Encoder	Download ARM64 FFmpeg	2026-01-25T15:30:40.4403671Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+Build ARM64 Encoder	Download ARM64 FFmpeg	2026-01-25T15:30:40.4403905Z   CARGO_INCREMENTAL: 0
+Build ARM64 Encoder	Download ARM64 FFmpeg	2026-01-25T15:30:40.4404085Z   CACHE_ON_FAILURE: false
+Build ARM64 Encoder	Download ARM64 FFmpeg	2026-01-25T15:30:40.4404266Z ##[endgroup]
+Build ARM64 Encoder	Build ARM64 Encoder	﻿2026-01-25T15:30:43.3678488Z ##[group]Run cargo build -p alvr_encoder_arm64 --target aarch64-pc-windows-msvc --release
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:30:43.3679203Z [36;1mcargo build -p alvr_encoder_arm64 --target aarch64-pc-windows-msvc --release[0m
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:30:43.3786427Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:30:43.3786775Z env:
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:30:43.3786941Z   CARGO_TERM_COLOR: always
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:30:43.3787504Z   FFMPEG_ARM64_URL: https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-winarm64-gpl-shared-7.1.zip
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:30:43.3788100Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:30:43.3788479Z   CARGO_INCREMENTAL: 0
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:30:43.3788827Z   CACHE_ON_FAILURE: false
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:30:43.3790005Z   FFMPEG_ARM64_DIR: D:\a\ALVR\ALVR/deps/windows/ffmpeg-arm64
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:30:43.3790442Z   BINDGEN_EXTRA_CLANG_ARGS: -ID:\a\ALVR\ALVR/deps/windows/ffmpeg-arm64/include
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:30:43.3790810Z ##[endgroup]
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:30:44.0425232Z [1m[92m    Updating[0m crates.io index
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:30:51.0350643Z [1m[92m   Compiling[0m alvr_encoder_arm64 v20.14.2 (D:\a\ALVR\ALVR\alvr\encoder_arm64)
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:30:51.0364740Z [1m[92m   Compiling[0m alvr_common v20.14.2 (D:\a\ALVR\ALVR\alvr\common)
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4850863Z [1m[93mwarning[0m[1m[97m: unused import: `Context`[0m
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4851758Z  [1m[96m--> [0malvr\encoder_arm64\src\encoder.rs:3:14
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4852119Z   [1m[96m|[0m
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4858310Z [1m[96m3[0m [1m[96m|[0m use anyhow::{Context, Result, bail};
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4858784Z   [1m[96m|[0m              [1m[93m^^^^^^^[0m
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4859099Z   [1m[96m|[0m
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4859541Z   [1m[96m= [0m[1m[97mnote[0m: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4859953Z 
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4912322Z [1m[93mwarning[0m[1m[97m: unused imports: `Deserialize` and `Serialize`[0m
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4913188Z  [1m[96m--> [0malvr\encoder_arm64\src\ipc.rs:4:13
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4913743Z   [1m[96m|[0m
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4914394Z [1m[96m4[0m [1m[96m|[0m use serde::{Deserialize, Serialize};
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4915121Z   [1m[96m|[0m             [1m[93m^^^^^^^^^^^[0m  [1m[93m^^^^^^^^^[0m
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4915537Z 
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4916005Z [1m[93mwarning[0m[1m[97m: unused imports: `EVENT_ALL_ACCESS` and `OpenEventW`[0m
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4916788Z   [1m[96m--> [0malvr\encoder_arm64\src\ipc.rs:14:19
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4917229Z    [1m[96m|[0m
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4918014Z [1m[96m14[0m [1m[96m|[0m     CreateEventW, OpenEventW, SetEvent, WaitForSingleObject, EVENT_ALL_ACCESS, INFINITE,
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4918713Z    [1m[96m|[0m                   [1m[93m^^^^^^^^^^[0m                                 [1m[93m^^^^^^^^^^^^^^^^[0m
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4919013Z 
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4919263Z [1m[93mwarning[0m[1m[97m: unused imports: `FrameData` and `PacketData`[0m
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4919694Z   [1m[96m--> [0malvr\encoder_arm64\src\main.rs:10:23
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4919970Z    [1m[96m|[0m
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4920353Z [1m[96m10[0m [1m[96m|[0m use ipc::{EncoderIpc, FrameData, PacketData};
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4920784Z    [1m[96m|[0m                       [1m[93m^^^^^^^^^[0m  [1m[93m^^^^^^^^^^[0m
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.4921020Z 
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.7141502Z [1m[91merror[E0061][0m[1m[97m: this function takes 4 arguments but 3 arguments were supplied[0m
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.7142888Z   [1m[96m--> [0malvr\encoder_arm64\src\main.rs:46:29
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.7143257Z    [1m[96m|[0m
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.7143937Z [1m[96m46[0m [1m[96m|[0m     let mut video_encoder = encoder::VideoEncoder::new(width, height, codec)
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.7144887Z    [1m[96m|[0m                             [1m[91m^^^^^^^^^^^^^^^^^^^^^^^^^^[0m[1m[96m----------------------[0m [1m[96margument #4 of type `bool` is missing[0m
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.7145474Z    [1m[96m|[0m
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.7148502Z [1m[92mnote[0m: associated function defined here
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.7148907Z   [1m[96m--> [0malvr\encoder_arm64\src\encoder.rs:29:12
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.7149228Z    [1m[96m|[0m
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.7149746Z [1m[96m29[0m [1m[96m|[0m     pub fn new(width: u32, height: u32, codec_name: &str, use_10bit: bool) -> Result<Self> {
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.7150460Z    [1m[96m|[0m            [1m[92m^^^[0m                                            [1m[96m---------------[0m
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.7150902Z [1m[96mhelp[0m: provide the argument
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.7151179Z    [1m[96m|[0m
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.7151802Z [1m[96m46[0m [1m[96m| [0m    let mut video_encoder = encoder::VideoEncoder::new(width, height, codec[92m, /* bool */[0m)
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.7152707Z    [1m[96m|[0m                                                                            [92m++++++++++++[0m
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.7153007Z 
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.7875448Z [1m[97mFor more information about this error, try `rustc --explain E0061`.[0m
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.7991819Z [1m[93mwarning[0m: `alvr_encoder_arm64` (bin "alvr_encoder_arm64") generated 4 warnings
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.7993738Z [1m[91merror[0m: could not compile `alvr_encoder_arm64` (bin "alvr_encoder_arm64") due to 1 previous error; 4 warnings emitted
+Build ARM64 Encoder	Build ARM64 Encoder	2026-01-25T15:31:16.9231328Z ##[error]Process completed with exit code 1.
+Build ARM64 Encoder	Post Checkout	﻿2026-01-25T15:31:16.9480189Z Post job cleanup.
+Build ARM64 Encoder	Post Checkout	2026-01-25T15:31:17.1818781Z [command]"C:\Program Files\Git\bin\git.exe" version
+Build ARM64 Encoder	Post Checkout	2026-01-25T15:31:17.2091412Z git version 2.52.0.windows.1
+Build ARM64 Encoder	Post Checkout	2026-01-25T15:31:17.2169324Z Temporarily overriding HOME='D:\a\_temp\702a9f0a-75d5-4708-bb82-35826556f398' before making global git config changes
+Build ARM64 Encoder	Post Checkout	2026-01-25T15:31:17.2170469Z Adding repository directory to the temporary git global config as a safe directory
+Build ARM64 Encoder	Post Checkout	2026-01-25T15:31:17.2180931Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\ALVR\ALVR
+Build ARM64 Encoder	Post Checkout	2026-01-25T15:31:17.2494457Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+Build ARM64 Encoder	Post Checkout	2026-01-25T15:31:17.2802945Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+Build ARM64 Encoder	Post Checkout	2026-01-25T15:31:17.8081725Z Entering 'openvr'
+Build ARM64 Encoder	Post Checkout	2026-01-25T15:31:17.8995014Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Build ARM64 Encoder	Post Checkout	2026-01-25T15:31:17.9263768Z http.https://github.com/.extraheader
+Build ARM64 Encoder	Post Checkout	2026-01-25T15:31:17.9310442Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+Build ARM64 Encoder	Post Checkout	2026-01-25T15:31:17.9620296Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+Build ARM64 Encoder	Post Checkout	2026-01-25T15:31:18.4904806Z Entering 'openvr'
+Build ARM64 Encoder	Post Checkout	2026-01-25T15:31:18.5544896Z http.https://github.com/.extraheader
+Build ARM64 Encoder	Post Checkout	2026-01-25T15:31:18.6069549Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+Build ARM64 Encoder	Post Checkout	2026-01-25T15:31:18.6376746Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+Build ARM64 Encoder	Post Checkout	2026-01-25T15:31:19.1538125Z Entering 'openvr'
+Build ARM64 Encoder	Post Checkout	2026-01-25T15:31:19.1889474Z file:D:/a/ALVR/ALVR/.git/modules/openvr/config	remote.origin.url
+Build ARM64 Encoder	Post Checkout	2026-01-25T15:31:19.2151588Z [command]"C:\Program Files\Git\bin\git.exe" config --file D:/a/ALVR/ALVR/.git/modules/openvr/config --name-only --get-regexp ^includeIf\.gitdir:
+Build ARM64 Encoder	Complete job	﻿2026-01-25T15:31:19.2609978Z Cleaning up orphan processes
+Build ARM64 Encoder	Complete job	2026-01-25T15:31:19.3028999Z Terminate orphan process: pid (2348) (vctip)

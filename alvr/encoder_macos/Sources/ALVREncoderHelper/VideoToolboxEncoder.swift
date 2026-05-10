@@ -113,9 +113,11 @@ final class VideoToolboxEncoder {
                                  value: kCFBooleanTrue)
             
             // 极限压榨延迟 (macOS 11.3+ / iOS 14.5+)
-            if #available(macOS 11.3, iOS 14.5, *) {
-                let key = "EnableLowLatencyRateControl" as CFString
-                VTSessionSetProperty(session, key: key, value: kCFBooleanTrue)
+            if config.enableLowLatencyRateControl {
+                if #available(macOS 11.3, iOS 14.5, *) {
+                    let key = "EnableLowLatencyRateControl" as CFString
+                    VTSessionSetProperty(session, key: key, value: kCFBooleanTrue)
+                }
             }
         }
 

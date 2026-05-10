@@ -1,29 +1,45 @@
-name: ARM64 Encoder Build
+name: macOS Hardware Encoder Pipeline
 
 on:
   push:
     branches: [master]
     paths:
-      - 'alvr/encoder_arm64/**'
+      - 'alvr/encoder_macos/**'
       - 'alvr/server_core/**'
       - 'alvr/server_openvr/**'
       - '.github/workflows/arm64-encoder.yml'
   pull_request:
     branches: [master]
-    paths:
-      - 'alvr/encoder_arm64/**'
-      - 'alvr/server_core/**'
-      - 'alvr/server_openvr/**'
-      - '.github/workflows/arm64-encoder.yml'
   workflow_dispatch:
 
-env:
-  CARGO_TERM_COLOR: always
-  FFMPEG_ARM64_URL: https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-winarm64-gpl-shared-7.1.zip
-
 jobs:
-  build-arm64-encoder:
-    name: Build ARM64 Encoder
+  build-macos-encoder:
+    name: Build macOS Encoder Helper
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Setup Swift
+        uses: swift-actions/setup-swift@v2
+
+      - name: Build macOS Encoder
+        run: |
+          cd alvr/encoder_macos
+          swift build -c release
+
+      - name: Upload macOS Encoder
+        uses: actions/upload-artifact@v4
+        with:
+          name: alvr-encoder-macos
+          path: alvr/encoder_macos/.build/release/ALVREncoderHelper
+          retention-days: 30
+
+  # 构建 Windows ARM64 Streamer
+  build-streamer-arm64:
+    name: Build Streamer (Windows ARM64)
     runs-on: windows-latest
     steps:
       - name: Checkout
@@ -39,87 +55,19 @@ jobs:
       - name: Cache Cargo
         uses: Swatinem/rust-cache@v2
         with:
-          key: arm64-encoder
+          key: streamer-windows-arm64
 
-      - name: Install LLVM
-        run: |
-          choco install llvm -y
-          echo "C:\Program Files\LLVM\bin" >> $env:GITHUB_PATH
-
-      - name: Download ARM64 FFmpeg
-        run: |
-          $ProgressPreference = 'SilentlyContinue'
-          Invoke-WebRequest -Uri "${{ env.FFMPEG_ARM64_URL }}" -OutFile ffmpeg-arm64.zip
-          Expand-Archive ffmpeg-arm64.zip -DestinationPath deps/windows
-          Rename-Item -Path "deps/windows/ffmpeg-n7.1-latest-winarm64-gpl-shared-7.1" -NewName "ffmpeg-arm64"
-          # 设置环境变量
-          echo "FFMPEG_ARM64_DIR=${{ github.workspace }}/deps/windows/ffmpeg-arm64" >> $env:GITHUB_ENV
-
-      - name: Build ARM64 Encoder
-        run: |
-          cargo build -p alvr_encoder_arm64 --target aarch64-pc-windows-msvc --release
-        env:
-          # bindgen 需要知道 FFmpeg 头文件位置
-          BINDGEN_EXTRA_CLANG_ARGS: "-I${{ github.workspace }}/deps/windows/ffmpeg-arm64/include"
-
-      - name: Prepare artifacts
-        run: |
-          mkdir -p artifacts
-          cp target/aarch64-pc-windows-msvc/release/alvr_encoder_arm64.exe artifacts/
-          # 复制 FFmpeg DLLs
-          cp deps/windows/ffmpeg-arm64/bin/*.dll artifacts/
-        shell: bash
-
-      - name: Upload ARM64 Encoder
-        uses: actions/upload-artifact@v4
-        with:
-          name: alvr-encoder-arm64
-          path: artifacts/
-          retention-days: 30
-
-  # 构建完整 x64 Streamer (含 GPL FFmpeg 和 ARM64 编码器支持)
-  build-x64-streamer:
-    name: Build x64 Streamer with ARM64 Support
-    runs-on: windows-latest
-    needs: build-arm64-encoder
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          submodules: true
-
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: Cache Cargo
-        uses: Swatinem/rust-cache@v2
-        with:
-          key: x64-streamer-gpl
-
-      - name: Prepare deps (with GPL FFmpeg)
+      - name: Prepare deps
         run: cargo xtask prepare-deps --platform windows --gpl
 
-      - name: Build streamer with GPL
-        run: cargo xtask build-streamer --release --gpl
+      - name: Build streamer (ARM64)
+        run: cargo build -p alvr_server_openvr -p alvr_dashboard --target aarch64-pc-windows-msvc --release --features alvr_server_openvr/gpl
+        # Note: xtask build-streamer might not support passing --target easily without env vars
+        # We manually build the components or use env vars if xtask supports them.
 
-      - name: Download ARM64 Encoder
-        uses: actions/download-artifact@v4
-        with:
-          name: alvr-encoder-arm64
-          path: build/alvr_streamer_windows/arm64-encoder
-
-      - name: Prepare final artifacts
-        run: |
-          mkdir -p final-artifacts
-          # 复制整个 streamer 目录
-          cp -r build/alvr_streamer_windows final-artifacts/
-          # 确保 ARM64 编码器在正确位置
-          ls -la final-artifacts/alvr_streamer_windows/arm64-encoder/
-        shell: bash
-
-      - name: Upload Complete Streamer
+      - name: Upload Streamer
         uses: actions/upload-artifact@v4
         with:
           name: alvr-streamer-windows-arm64
-          path: final-artifacts/alvr_streamer_windows
+          path: target/aarch64-pc-windows-msvc/release/
           retention-days: 30
