@@ -141,8 +141,12 @@ final class VideoToolboxEncoder {
         case .quality:
             // 质量模式: 使用 Quality 属性
             VTSessionSetProperty(session, key: kVTCompressionPropertyKey_Quality,
-                                 value: NSNumber(value: config.quality))
+                                 value: NSNumber(value: config.qualityValue))
         }
+
+        // 即使在 CBR/VBR 模式下也设置基础质量参考
+        VTSessionSetProperty(session, key: kVTCompressionPropertyKey_Quality,
+                             value: NSNumber(value: config.qualityValue))
 
         // ── 帧率 ────────────────────────────────────────────────
         VTSessionSetProperty(session, key: kVTCompressionPropertyKey_ExpectedFrameRate,
@@ -161,14 +165,15 @@ final class VideoToolboxEncoder {
         if config.codec == .h264 {
             let profile: CFString
             switch config.h264Profile {
-            case .baseline:
-                profile = kVTProfileLevel_H264_Baseline_AutoLevel
-            case .main:
-                profile = kVTProfileLevel_H264_Main_AutoLevel
-            case .high:
-                profile = kVTProfileLevel_H264_High_AutoLevel
+            case .baseline: profile = kVTProfileLevel_H264_Baseline_AutoLevel
+            case .main: profile = kVTProfileLevel_H264_Main_AutoLevel
+            case .high: profile = kVTProfileLevel_H264_High_AutoLevel
             }
             VTSessionSetProperty(session, key: kVTCompressionPropertyKey_ProfileLevel, value: profile)
+            
+            // H.264 熵编码模式 (CABAC/CAVLC)
+            let entropyMode = config.useCabac ? kVTH264EntropyMode_CABAC : kVTH264EntropyMode_CAVLC
+            VTSessionSetProperty(session, key: kVTCompressionPropertyKey_H264EntropyMode, value: entropyMode)
         } else {
             let profile: CFString
             switch config.hevcProfile {

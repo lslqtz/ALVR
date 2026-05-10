@@ -27,6 +27,10 @@ pub struct MacosEncoderSettings {
     pub realtime: bool,
     pub enable_low_latency_rate_control: bool,
     pub allow_frame_reordering: bool,
+    pub use_cabac: bool,
+    pub quality: u32,
+    pub filler_data: bool,
+    pub peak_bitrate_ratio: f32,
     pub verbose_logging: bool,
 }
 
@@ -68,6 +72,10 @@ impl MacosEncoderClient {
         body.push(if settings.realtime { 1 } else { 0 });
         body.push(if settings.enable_low_latency_rate_control { 1 } else { 0 });
         body.push(if settings.allow_frame_reordering { 1 } else { 0 });
+        body.push(if settings.use_cabac { 1 } else { 0 });
+        body.extend_from_slice(&settings.quality.to_le_bytes());
+        body.push(if settings.filler_data { 1 } else { 0 });
+        body.extend_from_slice(&settings.peak_bitrate_ratio.to_le_bytes());
 
         Self::send_packet_sync(&mut stream, PROTOCOL_INIT, &body)?;
 

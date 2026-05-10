@@ -164,6 +164,10 @@ struct MacosEncoderSettings {
     bool realtime;
     bool enable_low_latency_rate_control;
     bool allow_frame_reordering;
+    bool use_cabac;
+    unsigned int quality;
+    bool filler_data;
+    float peak_bitrate_ratio;
     bool verbose_logging;
 };
 

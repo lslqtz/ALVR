@@ -325,6 +325,18 @@ pub struct MacosEncoderConfig {
     #[schema(strings(help = "Allow B-frames (increases quality but adds 1-2 frames of latency). Recommended: OFF"))]
     pub allow_frame_reordering: bool,
     
+    #[schema(strings(help = "H.264 Entropy encoding. CABAC is better quality, CAVLC is faster. Recommended: CABAC"))]
+    pub use_cabac: bool,
+
+    #[schema(strings(help = "Encoding quality/complexity (0-100). Higher is better quality. Recommended: 50"))]
+    pub quality: u32,
+
+    #[schema(strings(help = "Allow filler data to maintain strict bitrate. Recommended: OFF"))]
+    pub filler_data: bool,
+
+    #[schema(strings(help = "Peak bitrate ratio (1.0-2.0). Controls how much the bitrate can spike. Recommended: 1.5"))]
+    pub peak_bitrate_ratio: f32,
+
     #[schema(strings(help = "Show detailed debug logs for macOS encoder in ALVR console. Recommended: OFF"))]
     pub verbose_logging: bool,
 }
@@ -1830,16 +1842,18 @@ pub fn session_settings_default() -> SettingsDefault {
                     force_software_encoding: false,
                     thread_count: 0,
                 },
-                macos_encoder: Switch {
-                    enabled: false,
-                    content: MacosEncoderConfig {
-                        host: "".into(),
-                        prioritize_speed: true,
-                        realtime: true,
-                        enable_low_latency_rate_control: true,
-                        allow_frame_reordering: false,
-                    },
-                },
+                macos_encoder: Switch::Disabled(MacosEncoderConfig {
+                    host: "".into(),
+                    prioritize_speed: true,
+                    realtime: true,
+                    enable_low_latency_rate_control: true,
+                    allow_frame_reordering: false,
+                    use_cabac: true,
+                    quality: 50,
+                    filler_data: false,
+                    peak_bitrate_ratio: 1.5,
+                    verbose_logging: false,
+                }),
             },
             mediacodec_extra_options: {
                 fn int32_default(int32: i32) -> MediacodecPropertyDefault {

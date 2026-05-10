@@ -517,6 +517,10 @@ pub struct MacosEncoderSettings {
     pub realtime: bool,
     pub enable_low_latency_rate_control: bool,
     pub allow_frame_reordering: bool,
+    pub use_cabac: bool,
+    pub quality: u32,
+    pub filler_data: bool,
+    pub peak_bitrate_ratio: f32,
     pub verbose_logging: bool,
 }
 
@@ -545,6 +549,10 @@ pub unsafe extern "C" fn alvr_start_macos_encoder(
         realtime: settings.realtime,
         enable_low_latency_rate_control: settings.enable_low_latency_rate_control,
         allow_frame_reordering: settings.allow_frame_reordering,
+        use_cabac: settings.use_cabac,
+        quality: settings.quality,
+        filler_data: settings.filler_data,
+        peak_bitrate_ratio: settings.peak_bitrate_ratio,
         verbose_logging: settings.verbose_logging,
     };
 

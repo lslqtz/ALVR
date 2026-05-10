@@ -58,6 +58,10 @@ void VideoEncoderSW::Initialize() {
             settings.realtime = config.realtime;
             settings.enable_low_latency_rate_control = config.enable_low_latency_rate_control;
             settings.allow_frame_reordering = config.allow_frame_reordering;
+            settings.use_cabac = config.use_cabac;
+            settings.quality = config.quality;
+            settings.filler_data = config.filler_data;
+            settings.peak_bitrate_ratio = config.peak_bitrate_ratio;
             settings.verbose_logging = config.verbose_logging;
 
             if (config.verbose_logging) {

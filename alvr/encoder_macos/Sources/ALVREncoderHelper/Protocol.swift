@@ -36,13 +36,16 @@ struct InitMessage {
     let bitrateBps: UInt64
     let framerate: UInt32
     
-    // New settings
     let prioritizeSpeed: Bool
     let realtime: Bool
     let enableLowLatencyRateControl: Bool
     let allowFrameReordering: Bool
+    let useCabac: Bool
+    let quality: UInt32
+    let fillerData: Bool
+    let peakBitrateRatio: Float
 
-    static let bodySize = 4 + 4 + 1 + 8 + 4 + 4 // 25 bytes
+    static let bodySize = 4 + 4 + 1 + 8 + 4 + 1 + 1 + 1 + 1 + 1 + 4 + 1 + 4 // 35 bytes
 
     static func decode(from data: Data) -> InitMessage? {
         guard data.count >= bodySize else { return nil }
@@ -59,15 +62,20 @@ struct InitMessage {
         let realtime = data[offset] != 0; offset += 1
         let enableLowLatencyRateControl = data[offset] != 0; offset += 1
         let allowFrameReordering = data[offset] != 0; offset += 1
+        let useCabac = data[offset] != 0; offset += 1
+        let quality = data.readUInt32(at: &offset)
+        let fillerData = data[offset] != 0; offset += 1
+        
+        // Float (4 bytes)
+        let peakBitrateRatio = data.subdata(in: offset..<offset+4).withUnsafeBytes { $0.load(as: Float.self) }
+        offset += 4
 
-        return InitMessage(
-            width: width, height: height, codec: codec, 
-            bitrateBps: bitrate, framerate: framerate,
-            prioritizeSpeed: prioritizeSpeed,
-            realtime: realtime,
-            enableLowLatencyRateControl: enableLowLatencyRateControl,
-            allowFrameReordering: allowFrameReordering
-        )
+        return InitMessage(width: width, height: height, codec: codec, bitrateBps: bitrate, framerate: framerate,
+                           prioritizeSpeed: prioritizeSpeed, realtime: realtime,
+                           enableLowLatencyRateControl: enableLowLatencyRateControl,
+                           allowFrameReordering: allowFrameReordering,
+                           useCabac: useCabac, quality: quality, fillerData: fillerData,
+                           peakBitrateRatio: peakBitrateRatio)
     }
 }
 

@@ -1,5 +1,7 @@
 import Foundation
 import Network
+import CoreVideo
+import CoreMedia
 
 /// TCP 网络服务器
 /// 监听来自 Windows VM 中 ALVR 的连接，处理二进制协议消息
@@ -189,6 +191,10 @@ final class NetworkServer {
             config.realtime = msg.realtime
             config.enableLowLatencyRateControl = msg.enableLowLatencyRateControl
             config.allowFrameReordering = msg.allowFrameReordering
+            config.useCabac = msg.useCabac
+            config.qualityValue = Double(msg.quality) / 100.0
+            config.fillerData = msg.fillerData
+            config.peakBitrateRatio = Double(msg.peakBitrateRatio)
 
             encoder = try VideoToolboxEncoder(config: config)
             decoder = VideoToolboxDecoder(codec: msg.codec)

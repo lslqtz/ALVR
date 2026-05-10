@@ -27,6 +27,8 @@ struct EncoderConfig {
     var maxKeyframeIntervalFrames: Int = 0
 
     // MARK: 延迟控制
+    /// 是否优先保证画质而非速度
+    var prioritizeQualityOverSpeed: Bool = false
     /// 是否启用实时编码模式 (降低延迟，可能牺牲压缩效率)
     var realtime: Bool = true
     /// 是否允许帧重排序 (B 帧)。false = 最低延迟
@@ -37,11 +39,12 @@ struct EncoderConfig {
     var enableLowLatencyRateControl: Bool = true
 
     // MARK: 画质
-    /// 编码质量 (0.0-1.0)，仅在 VBR/Quality 模式下生效。
-    /// 0.0 = 最低质量最高速度, 1.0 = 最高质量
-    var quality: Double = 0.5
-    /// 是否优先保证画质稳定性 (以较高延迟为代价)
-    var prioritizeQualityOverSpeed: Bool = false
+    /// 编码质量 (0.0-1.0)。
+    var qualityValue: Double = 0.5
+    /// H.264 熵编码模式。true = CABAC, false = CAVLC
+    var useCabac: Bool = true
+    /// 是否允许填充数据
+    var fillerData: Bool = false
 
     // MARK: 高级
     /// 10-bit 编码 (需要硬件支持)
