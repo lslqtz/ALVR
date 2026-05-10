@@ -5,11 +5,15 @@ on:
     branches: [master]
     paths:
       - 'alvr/encoder_arm64/**'
+      - 'alvr/server_core/**'
+      - 'alvr/server_openvr/**'
       - '.github/workflows/arm64-encoder.yml'
   pull_request:
     branches: [master]
     paths:
       - 'alvr/encoder_arm64/**'
+      - 'alvr/server_core/**'
+      - 'alvr/server_openvr/**'
       - '.github/workflows/arm64-encoder.yml'
   workflow_dispatch:
 

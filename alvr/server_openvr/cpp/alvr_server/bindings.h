@@ -158,6 +158,27 @@ extern "C" void ShutdownSteamvr();
 extern "C" void SetOpenvrProperty(void* instancePtr, FfiOpenvrProperty prop);
 extern "C" void SetOpenvrPropByDeviceID(unsigned long long deviceID, FfiOpenvrProperty prop);
 extern "C" void RegisterButton(void* instancePtr, unsigned long long buttonID);
+
+extern "C" bool alvr_start_macos_encoder(
+    const char* host_ptr,
+    unsigned int width,
+    unsigned int height,
+    unsigned char codec,
+    bool realtime,
+    void (*video_send_callback)(unsigned long long timestamp_ns, unsigned char* buffer_ptr, int len, bool is_idr)
+);
+extern "C" void alvr_update_macos_encoder_params(unsigned long long bitrate_bps, float framerate);
+extern "C" void alvr_send_raw_video_frame_macos(
+    unsigned long long timestamp_ns,
+    bool insert_idr,
+    unsigned int width,
+    unsigned int height,
+    unsigned int row_pitch,
+    unsigned char pixel_format,
+    const unsigned char* buffer_ptr,
+    int len
+);
+extern "C" void alvr_stop_macos_encoder();
 extern "C" void SetLocalViewParams(const FfiViewParams params[2]);
 extern "C" void SetBattery(unsigned long long deviceID, float gauge_value, bool is_plugged);
 extern "C" void SetButton(unsigned long long buttonID, FfiButtonValue value);

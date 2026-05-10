@@ -59,7 +59,6 @@ private:
     int m_renderHeight;
     int m_bitrateInMBits;
 
-    // ARM64 out-of-process encoder via IPC
     std::unique_ptr<Arm64EncoderIpc::EncoderIpcClient> m_arm64Encoder;
     bool m_useArm64Encoder = false;
 

@@ -302,6 +302,14 @@ CABAC produces better compression but it's significantly slower and may lead to 
 
     #[schema(strings(display_name = "Software (CPU) encoding"))]
     pub software: SoftwareEncodingConfig,
+
+    #[cfg_attr(not(target_os = "windows"), schema(flag = "hidden"))]
+    #[schema(strings(
+        display_name = "macOS Encoder IP",
+        help = "Optional IP address (e.g. 192.168.1.100:9945) of a macOS remote encoder helper. If set, ALVR will offload encoding to the macOS machine via TCP."
+    ))]
+    #[schema(flag = "steamvr-restart")]
+    pub macos_encoder_ip: Option<String>,
 }
 
 #[derive(SettingsSchema, Serialize, Deserialize, Clone, Debug, PartialEq)]
@@ -1804,6 +1812,10 @@ pub fn session_settings_default() -> SettingsDefault {
                     gui_collapsed: true,
                     force_software_encoding: false,
                     thread_count: 0,
+                },
+                macos_encoder_ip: OptionalDefault {
+                    set: false,
+                    content: "".into(),
                 },
             },
             mediacodec_extra_options: {

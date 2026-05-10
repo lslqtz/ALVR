@@ -38,6 +38,18 @@ void VideoEncoderSW::Initialize() {
     int err;
     Debug("Initializing VideoEncoderSW.\n");
 
+    // 优先尝试 macOS 远程编码器
+    if (!Settings::Instance().m_macosEncoderHost.empty()) {
+        const char* host = Settings::Instance().m_macosEncoderHost.c_str();
+        uint8_t codec = (m_codec == ALVR_CODEC_H264) ? 0 : ((m_codec == ALVR_CODEC_HEVC) ? 1 : 2);
+        
+        if (alvr_start_macos_encoder(host, m_renderWidth, m_renderHeight, codec, true, VideoSend)) {
+            Info("Using macOS remote encoder via TCP (Rust FFI)\n");
+            m_useMacEncoder = true;
+            return;
+        }
+    }
+
     // 尝试使用 ARM64 编码器（仅在 Windows on ARM 上）
     if (TryInitArm64Encoder()) {
         // ARM64 编码器初始化成功，不需要初始化内置 FFmpeg
@@ -139,6 +151,12 @@ void VideoEncoderSW::Initialize() {
 void VideoEncoderSW::Shutdown() {
     Debug("Shutting down VideoEncoderSW.\n");
 
+    // 清理 macOS 远程编码器
+    if (m_useMacEncoder) {
+        alvr_stop_macos_encoder();
+        m_useMacEncoder = false;
+    }
+
     // 清理 ARM64 编码器
     if (m_arm64Encoder) {
         m_arm64Encoder->Shutdown();
@@ -164,8 +182,16 @@ void VideoEncoderSW::Shutdown() {
 void VideoEncoderSW::Transmit(
     ID3D11Texture2D* pTexture, uint64_t presentationTime, uint64_t targetTimestampNs, bool insertIDR
 ) {
-    // 如果使用 ARM64 编码器，需要先准备 staging texture 然后发送
-    if (m_useArm64Encoder) {
+    // 如果使用远程编码器（macOS 或 ARM64），准备 staging texture 并发送
+    if (m_useMacEncoder || m_useArm64Encoder) {
+        // Handle bitrate changes for remote encoders
+        if (m_useMacEncoder) {
+            auto params = GetDynamicEncoderParams();
+            if (params.updated) {
+                alvr_update_macos_encoder_params(params.bitrate_bps, params.framerate);
+            }
+        }
+
         // Setup staging texture if not defined yet
         if (!m_stagingTex) {
             HRESULT hr = SetupStagingTexture(pTexture);
@@ -182,14 +208,24 @@ void VideoEncoderSW::Transmit(
             return;
         }
 
-        // 通过 ARM64 编码器处理
         uint32_t dataSize = m_stagingTexMap.RowPitch * m_stagingTexDesc.Height;
         if (Settings::Instance().m_enableHdr) {
-            // NV12/P010 有额外的 UV plane
             dataSize += m_stagingTexMap.RowPitch * (m_stagingTexDesc.Height / 2);
         }
 
-        TransmitViaArm64((uint8_t*)m_stagingTexMap.pData, dataSize, targetTimestampNs, insertIDR);
+        if (m_useMacEncoder) {
+            uint8_t format = 0; // RGBA
+            if (Settings::Instance().m_enableHdr) {
+                format = Settings::Instance().m_use10bitEncoder ? 2 : 1; // P010 : NV12
+            }
+            alvr_send_raw_video_frame_macos(
+                targetTimestampNs, insertIDR, 
+                m_stagingTexDesc.Width, m_stagingTexDesc.Height, m_stagingTexMap.RowPitch, format,
+                (const uint8_t*)m_stagingTexMap.pData, dataSize
+            );
+        } else {
+            TransmitViaArm64((uint8_t*)m_stagingTexMap.pData, dataSize, targetTimestampNs, insertIDR);
+        }
 
         m_d3dRender->GetContext()->Unmap(m_stagingTex.Get(), 0);
         return;
@@ -452,5 +488,6 @@ bool VideoEncoderSW::TransmitViaArm64(
 
     return false;
 }
+
 
 #endif // ALVR_GPL

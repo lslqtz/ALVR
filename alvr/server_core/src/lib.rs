@@ -5,6 +5,7 @@ mod hand_gestures;
 mod haptics;
 mod input_mapping;
 mod logging_backend;
+pub mod macos_encoder;
 mod sockets;
 mod statistics;
 mod tracking;

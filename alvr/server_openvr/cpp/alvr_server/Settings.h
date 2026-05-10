@@ -60,6 +60,7 @@ public:
     uint32_t m_entropyCoding;
     bool m_force_sw_encoding;
     uint32_t m_swThreadCount;
+    std::string m_macosEncoderHost;
 
     uint32_t m_nvencTuningPreset;
     uint32_t m_nvencMultiPass;

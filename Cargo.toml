@@ -1,6 +1,7 @@
 [workspace]
 resolver = "2"
 members = ["alvr/*"]
+exclude = ["alvr/encoder_macos"]
 
 [workspace.package]
 version = "20.14.2"

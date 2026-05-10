@@ -2,6 +2,7 @@
 #![allow(clippy::missing_safety_doc)]
 
 use crate::{
+    macos_encoder::MacosEncoderClient,
     SESSION_MANAGER, ServerCoreContext, ServerCoreEvent, logging_backend, tracking::HandType,
 };
 use alvr_common::{
@@ -502,6 +503,81 @@ pub unsafe extern "C" fn alvr_duration_until_next_vsync(out_ns: *mut u64) -> boo
     } else {
         false
     }
+}
+
+static MACOS_ENCODER_CLIENT: LazyLock<Mutex<Option<MacosEncoderClient>>> =
+    LazyLock::new(|| Mutex::new(None));
+
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn alvr_start_macos_encoder(
+    host_ptr: *const c_char,
+    width: u32,
+    height: u32,
+    codec: u8,
+    realtime: bool,
+    video_send_callback: extern "C" fn(timestamp_ns: u64, buffer_ptr: *mut u8, len: i32, is_idr: bool),
+) -> bool {
+    let host = unsafe { CStr::from_ptr(host_ptr) }.to_string_lossy();
+    
+    // We wrap the video_send_callback to be Send + Sync safe for the thread
+    struct CallbackWrapper {
+        cb: extern "C" fn(u64, *mut u8, i32, bool),
+    }
+    unsafe impl Send for CallbackWrapper {}
+    unsafe impl Sync for CallbackWrapper {}
+    
+    let wrapper = CallbackWrapper { cb: video_send_callback };
+
+    match MacosEncoderClient::connect_and_start(
+        &host, width, height, codec, realtime,
+        move |timestamp_ns, is_idr, data| {
+            // Need to cast the data to a mutable pointer just for the C API, 
+            // ALVR's send_video promises not to mutate it in practice (it just copies it).
+            (wrapper.cb)(timestamp_ns, data.as_ptr() as *mut u8, data.len() as i32, is_idr);
+        }
+    ) {
+        Ok(client) => {
+            *MACOS_ENCODER_CLIENT.lock() = Some(client);
+            true
+        }
+        Err(e) => {
+            log::error!("Failed to start macOS encoder: {}", e);
+            false
+        }
+    }
+}
+
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn alvr_update_macos_encoder_params(bitrate_bps: u64, framerate: f32) {
+    if let Some(client) = &mut *MACOS_ENCODER_CLIENT.lock() {
+        if let Err(e) = client.update_params(bitrate_bps, framerate) {
+            log::error!("Failed to update macOS encoder params: {}", e);
+        }
+    }
+}
+
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn alvr_send_raw_video_frame_macos(
+    timestamp_ns: u64,
+    insert_idr: bool,
+    width: u32,
+    height: u32,
+    row_pitch: u32,
+    pixel_format: u8,
+    buffer_ptr: *const u8,
+    len: i32,
+) {
+    if let Some(client) = &mut *MACOS_ENCODER_CLIENT.lock() {
+        let buffer = unsafe { std::slice::from_raw_parts(buffer_ptr, len as usize) };
+        if let Err(e) = client.send_frame(timestamp_ns, insert_idr, width, height, row_pitch, pixel_format, buffer) {
+            log::error!("Failed to send frame to macOS encoder: {}", e);
+        }
+    }
+}
+
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn alvr_stop_macos_encoder() {
+    *MACOS_ENCODER_CLIENT.lock() = None;
 }
 
 #[unsafe(no_mangle)]
